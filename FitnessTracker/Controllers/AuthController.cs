@@ -58,16 +58,24 @@ namespace FitnessTracker.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(LoginCredentials credentials)
         {
-            var encryptedUsername = StringEncryption.Encrypt(credentials.UserName);
-            var user = await _unitOfWork.UserRepository.GetUserByUsername(encryptedUsername);
-
-            if (user == null || !BCrypt.Net.BCrypt.Verify(credentials.Password, user.password))
+            try
             {
-                throw new KeyNotFoundException($"Username or password is incorrect");
+                var encryptedUsername = StringEncryption.Encrypt(credentials.UserName);
+                var user = await _unitOfWork.UserRepository.GetUserByUsername(encryptedUsername);
+
+                if (user == null || !BCrypt.Net.BCrypt.Verify(credentials.Password, user.password))
+                {
+                    throw new KeyNotFoundException($"Username or password is incorrect");
+                }
+
+                string token = CreateToken(user);
+                return Ok(token);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, e.Message);
             }
 
-            string token = CreateToken(user);
-            return Ok(token);
 
         }
         private string CreateToken(User user)
