@@ -10,10 +10,11 @@ namespace FitnessTracker.Controllers
     public class UserWorkoutController : ControllerBase
     {
         [HttpGet(), Authorize]
-        public IEnumerable<UserWorkout> GetUserWorkouts()
+        public async Task<IActionResult> GetUserWorkouts()
         {
 
-            return new List<UserWorkout>();
+            //return new List<UserWorkout>();
+            return null;
         }
     }
 }

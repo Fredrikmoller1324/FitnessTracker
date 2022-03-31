@@ -4,6 +4,7 @@ using FitnessTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessTracker.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220331175734_SeedExerciseAndExerciseCategories")]
+    partial class SeedExerciseAndExerciseCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,41 +24,19 @@ namespace FitnessTracker.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ExerciseExcerciseCategory", b =>
+            modelBuilder.Entity("ExerciseExerciseCategory", b =>
                 {
-                    b.Property<int>("ExerciseCategoryId")
+                    b.Property<int>("ExerciseCategoriesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ExerciseId")
+                    b.Property<int>("ExercisesId")
                         .HasColumnType("int");
 
-                    b.HasKey("ExerciseCategoryId", "ExerciseId");
+                    b.HasKey("ExerciseCategoriesId", "ExercisesId");
 
-                    b.HasIndex("ExerciseId");
+                    b.HasIndex("ExercisesId");
 
-                    b.ToTable("ExerciseExerciseCategories", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            ExerciseCategoryId = 1,
-                            ExerciseId = 1
-                        },
-                        new
-                        {
-                            ExerciseCategoryId = 2,
-                            ExerciseId = 1
-                        },
-                        new
-                        {
-                            ExerciseCategoryId = 6,
-                            ExerciseId = 1
-                        },
-                        new
-                        {
-                            ExerciseCategoryId = 7,
-                            ExerciseId = 1
-                        });
+                    b.ToTable("ExerciseExerciseCategory");
                 });
 
             modelBuilder.Entity("FitnessTracker.Entities.Exercise", b =>
@@ -241,17 +221,17 @@ namespace FitnessTracker.Data.Migrations
                     b.ToTable("WorkoutExercises");
                 });
 
-            modelBuilder.Entity("ExerciseExcerciseCategory", b =>
+            modelBuilder.Entity("ExerciseExerciseCategory", b =>
                 {
                     b.HasOne("FitnessTracker.Entities.ExerciseCategory", null)
                         .WithMany()
-                        .HasForeignKey("ExerciseCategoryId")
+                        .HasForeignKey("ExerciseCategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FitnessTracker.Entities.Exercise", null)
                         .WithMany()
-                        .HasForeignKey("ExerciseId")
+                        .HasForeignKey("ExercisesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
