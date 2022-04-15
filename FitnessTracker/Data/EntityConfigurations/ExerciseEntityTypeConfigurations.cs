@@ -34,6 +34,11 @@ namespace FitnessTracker.Data.EntityConfigurations
                     {
                         Id = 5,
                         Name = "Leg press"
+                    },
+                    new Exercise
+                    {
+                        Id = 6,
+                        Name = "OverHead Press"
                     });
         }
     }

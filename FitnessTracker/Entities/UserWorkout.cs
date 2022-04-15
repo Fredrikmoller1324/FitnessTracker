@@ -1,6 +1,8 @@
-﻿namespace FitnessTracker.Entities
+﻿using FitnessTracker.Interfaces;
+
+namespace FitnessTracker.Entities
 {
-    public class UserWorkout
+    public class UserWorkout : BaseEntity
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

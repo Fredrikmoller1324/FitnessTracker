@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FitnessTracker.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace FitnessTracker.Entities
 {
-    public class WorkoutExercise
+    public class WorkoutExercise : BaseEntity
     {
         [Key]
         public int UserWorkoutId { get; set; }

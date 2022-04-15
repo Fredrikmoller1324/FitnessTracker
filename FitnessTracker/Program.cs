@@ -1,6 +1,7 @@
 using FitnessTracker.Data;
 using FitnessTracker.Data.Repos;
 using FitnessTracker.Interfaces;
+using FitnessTracker.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWorkRepository>();
+builder.Services.AddTransient<IExerciseService,ExerciseService>();
+
+// Adds AutoMapper to DI container
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBAzureConnection"));

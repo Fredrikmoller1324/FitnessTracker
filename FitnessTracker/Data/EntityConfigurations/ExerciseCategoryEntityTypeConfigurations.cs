@@ -44,7 +44,12 @@ namespace FitnessTracker.Data.EntityConfigurations
                      { 
                          Id = 7,
                          Name = "Calves" 
-                     });
+                     },
+                    new ExerciseCategory
+                    {
+                        Id = 8,
+                        Name = "Shoulders"
+                    });
         }
     }
 }

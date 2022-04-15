@@ -42,7 +42,22 @@ namespace FitnessTracker.Data
                     new { ExerciseId = 1, ExerciseCategoryId = 1},
                     new { ExerciseId = 1, ExerciseCategoryId = 2 },
                     new { ExerciseId = 1, ExerciseCategoryId = 6 },
-                    new { ExerciseId = 1, ExerciseCategoryId = 7 }
+                    new { ExerciseId = 1, ExerciseCategoryId = 7 },
+                    new { ExerciseId = 2, ExerciseCategoryId = 1 },
+                    new { ExerciseId = 2, ExerciseCategoryId = 2 },
+                    new { ExerciseId = 2, ExerciseCategoryId = 6 },
+                    new { ExerciseId = 2, ExerciseCategoryId = 7 },
+                    new { ExerciseId = 3, ExerciseCategoryId = 1 },
+                    new { ExerciseId = 3, ExerciseCategoryId = 3 },
+                    new { ExerciseId = 3, ExerciseCategoryId = 5 },
+                    new { ExerciseId = 3, ExerciseCategoryId = 8 },
+                    new { ExerciseId = 3, ExerciseCategoryId = 6 },
+                    new { ExerciseId = 4, ExerciseCategoryId = 4 },
+                    new { ExerciseId = 5, ExerciseCategoryId = 6 },
+                    new { ExerciseId = 5, ExerciseCategoryId = 7 },
+                    new { ExerciseId = 5, ExerciseCategoryId = 2 },
+                    new { ExerciseId = 6, ExerciseCategoryId = 8 }
+
                 );
 
         }
