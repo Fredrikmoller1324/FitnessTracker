@@ -5,10 +5,11 @@ namespace FitnessTracker.Interfaces
 {
     public interface IGeneric<TEntity> where TEntity : BaseEntity
     {
-        Task<IEnumerable<TEntity>> GetAll(params Expression<Func<TEntity, object>>[] including);
-        Task<TEntity> GetById(int id);
-        Task Create(TEntity entity);
-        void Update(int id,TEntity entity);
-        Task Delete(int id);
+        Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] including);
+        Task<TEntity> GetByIdAsync(int id);
+        TEntity Create(TEntity entity);
+        TEntity Update(int id,TEntity entity);
+        TEntity Delete(Func<TEntity,bool> predicate);
+        bool Exists(Func<TEntity, bool> predicate);
     }
 }

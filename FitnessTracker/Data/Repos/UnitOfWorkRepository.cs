@@ -17,14 +17,14 @@ namespace FitnessTracker.Data.Repos
 
         public IUserRepository UserRepository => new UserRepository(_context);
 
-        public IExerciseRepository Exercise => new ExerciseRepository(_context);
+        public IExerciseRepository ExerciseRepository => new ExerciseRepository(_context);
 
-        public async Task<bool> Complete()
+        public async Task<bool> CompleteAsync()
         {
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public bool HasChanges()
+        public bool HasChangesAsync()
         {
             return _context.ChangeTracker.HasChanges();
         }

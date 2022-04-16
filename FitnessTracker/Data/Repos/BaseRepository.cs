@@ -15,19 +15,34 @@ namespace FitnessTracker.Data.Repos
             _dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             
         }
-        public async Task Create(TEntity entity)
+        public TEntity Create(TEntity entity)
         {
-           await _dataContext.Set<TEntity>().AddAsync(entity);
+            if (entity == null) return null;
+
+           _dataContext.Set<TEntity>().AddAsync(entity);
+
+            return entity;
         }
 
-        public async Task Delete(int id)
+        /// <summary>
+        ///     Deletes an entity
+        /// </summary>
+        /// <param name="predicate">A function to test each element for a condition</param>
+        /// <returns>The deleted entity or null if deletion was unsuccessful</returns>
+        public TEntity Delete(Func<TEntity, bool> predicate)
         {
-            var entity = await GetById(id);
-            if(entity == null) throw new KeyNotFoundException();
+            if (predicate is null) return null;
+
+            var entity = _dataContext.Set<TEntity>().FirstOrDefault(predicate);
+
+            if (entity is null) return null;
+
             _dataContext.Set<TEntity>().Remove(entity);
+
+            return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll(params Expression<Func<TEntity, object>>[] including)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] including)
         {
             var query =  _dataContext.Set<TEntity>().AsQueryable();
 
@@ -44,22 +59,29 @@ namespace FitnessTracker.Data.Repos
             return await query.ToListAsync();
         }
 
-        public async Task<TEntity> GetById(int id)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
             var entity = await _dataContext.Set<TEntity>().SingleOrDefaultAsync(entity => entity.Id == id);
             if(entity == null) throw  new KeyNotFoundException();
             return entity;
         }
 
-        public void Update(int id, TEntity entity)
+        public TEntity Update(int id, TEntity entity)
         {
             _dataContext.Set<TEntity>().Update(entity);
+            return entity;
         }
 
-        //public async Task<IEnumerable<TEntity>> GetAll()
-        //{
-        //    return await _dataContext.Set<TEntity>().ToListAsync();
-            
-        //}
+        public bool Exists(Func<TEntity, bool> predicate)
+        {
+            if (predicate is null)
+            {
+                return false;
+            }
+
+            return _dataContext.Set<TEntity>().AsNoTracking().FirstOrDefault(predicate) is not null;
+        }
+
+
     }
 }

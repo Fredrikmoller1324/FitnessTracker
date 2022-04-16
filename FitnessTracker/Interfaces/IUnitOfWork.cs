@@ -5,9 +5,9 @@
         IUserRepository UserRepository { get; }
         IUserWorkout UserWorkout { get; }
         IWorkoutExercise WorkoutExercise { get; }
-        IExerciseRepository Exercise { get; }
+        IExerciseRepository ExerciseRepository { get; }
 
-        Task<bool> Complete();
-        bool HasChanges();
+        Task<bool> CompleteAsync();
+        bool HasChangesAsync();
     }
 }

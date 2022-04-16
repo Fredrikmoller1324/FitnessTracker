@@ -5,6 +5,12 @@ namespace FitnessTracker.Interfaces
 {
     public interface IExerciseService
     {
-        Task<IEnumerable<ExerciseDTO>> GetAllExercises();
+        Task<IEnumerable<ExerciseDTO>> GetAllExercisesAsync();
+
+        Task<ExerciseDTO> GetByNameAsync(string exerciseName);
+
+        Task CreateExerciseAsync(ExerciseDTO exercise);
+
+        Task DeleteExerciseAsync(int key);
     }
 }

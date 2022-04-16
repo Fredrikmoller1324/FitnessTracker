@@ -16,9 +16,9 @@ namespace FitnessTracker.Data.Repos
         public async Task<Exercise> GetExerciseByName(string exerciseName)
         {
             
-            var exercise =  await _context.Exercises.FirstOrDefaultAsync(e=>e.Name == exerciseName);
+            var exercise =  await _context.Exercises.Include(x=>x.ExerciseCategories).FirstOrDefaultAsync(e=>e.Name == exerciseName);
 
-            if (exercise == null) throw new KeyNotFoundException();
+            if (exercise == null) throw new KeyNotFoundException($"Exercise with name '{exerciseName}' does not exist");
 
             return exercise;
         }

@@ -44,7 +44,7 @@ namespace FitnessTracker.Controllers
                     password = BCrypt.Net.BCrypt.HashPassword(newUser.Password)
                 });
 
-                if (await _unitOfWork.Complete()) return StatusCode(201);
+                if (await _unitOfWork.CompleteAsync()) return StatusCode(201);
 
                 return StatusCode(500);
             }
