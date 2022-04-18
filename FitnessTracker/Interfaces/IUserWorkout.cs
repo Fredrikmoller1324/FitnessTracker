@@ -2,12 +2,8 @@
 
 namespace FitnessTracker.Interfaces
 {
-    public interface IUserWorkout
+    public interface IUserWorkout : IGeneric<UserWorkout>
     {
-        Task AddUserWorkoutAsync(UserWorkout userWorkout);
-
-        Task<IEnumerable<UserWorkout>> GetUserWorkoustAsync();
-
-        Task<IEnumerable<UserWorkout>> GetUserWorkoutsByUserId(int userId);
+     
     }
 }

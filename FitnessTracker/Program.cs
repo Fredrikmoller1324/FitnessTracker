@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWorkRepository>();
 builder.Services.AddTransient<IExerciseService,ExerciseService>();
+builder.Services.AddTransient<IUserWorkoutService, UserWorkoutService>();
 
 // Adds AutoMapper to DI container
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

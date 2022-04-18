@@ -11,7 +11,7 @@ namespace FitnessTracker.Data.Repos
             _context = context;
         }
 
-        public IUserWorkout UserWorkout => throw new NotImplementedException();
+        public IUserWorkout UserWorkoutRepository => new UserWorkoutRepository(_context);
 
         public IWorkoutExercise WorkoutExercise => throw new NotImplementedException();
 

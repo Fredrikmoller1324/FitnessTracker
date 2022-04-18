@@ -3,7 +3,7 @@
     public interface IUnitOfWork
     {
         IUserRepository UserRepository { get; }
-        IUserWorkout UserWorkout { get; }
+        IUserWorkout UserWorkoutRepository { get; }
         IWorkoutExercise WorkoutExercise { get; }
         IExerciseRepository ExerciseRepository { get; }
 
