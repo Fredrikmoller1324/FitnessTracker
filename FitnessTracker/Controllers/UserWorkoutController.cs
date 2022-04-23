@@ -23,9 +23,20 @@ namespace FitnessTracker.Controllers
         [HttpGet("GetAllUserWorkouts"), Authorize]
         public async Task<IActionResult> GetUserWorkouts()
         {
-            var userId = User.GetUserId();
-        
-            return null;
+            try
+            {
+                var userId = User.GetUserId();
+
+                var allUserWorkouts = await _userWorkoutService.GetAllUserWorkouts(userId);
+
+                return Ok(allUserWorkouts);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+
         }
 
         [HttpPost("CreateUserWorkout"), Authorize]

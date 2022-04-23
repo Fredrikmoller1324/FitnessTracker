@@ -3,6 +3,7 @@ using FitnessTracker.Data.Auth;
 using FitnessTracker.Entities;
 using FitnessTracker.Entities.DTOs;
 using FitnessTracker.Interfaces;
+using MailLibrary;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -18,11 +19,13 @@ namespace FitnessTracker.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _config;
+        private readonly IMailService _mailService;
 
-        public AuthController(IUnitOfWork unitOfWork, IConfiguration config)
+        public AuthController(IUnitOfWork unitOfWork, IConfiguration config, IMailService mailService)
         {
             _unitOfWork = unitOfWork;
             _config = config;
+            _mailService = mailService;
         }
 
         [HttpPost("Register")]
@@ -44,7 +47,17 @@ namespace FitnessTracker.Controllers
                     password = BCrypt.Net.BCrypt.HashPassword(newUser.Password)
                 });
 
-                if (await _unitOfWork.CompleteAsync()) return StatusCode(201);
+                if (await _unitOfWork.CompleteAsync()) 
+                {
+                    var request = new MailRequest
+                    {
+                        Subject = "Registred",
+                        Body = $"Welcome to Fitnesstracker, {newUser.FirstName} {newUser.LastName}",
+                        ToEmail = $"{newUser.UserName}"
+                    };
+                    await _mailService.SendEmailAsync(request);
+                    return StatusCode(201);
+                } 
 
                 return StatusCode(500);
             }
@@ -75,9 +88,9 @@ namespace FitnessTracker.Controllers
             {
                 return StatusCode(500, e.Message);
             }
-
-
         }
+
+
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>

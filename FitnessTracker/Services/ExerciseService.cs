@@ -19,7 +19,7 @@ namespace FitnessTracker.Services
 
         public async Task<IEnumerable<ExerciseDTO>> GetAllExercisesAsync()
         {
-           var allExercises = await _unitOfWork.ExerciseRepository.GetAllAsync(x=>x.ExerciseCategories);
+           var allExercises = await _unitOfWork.ExerciseRepository.GetAllAsync(null,x=>x.ExerciseCategories);
 
             if (allExercises == null || !allExercises.Any()) throw new NullOrEmptyException("List of Exercises is null or empty");
 

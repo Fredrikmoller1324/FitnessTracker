@@ -7,6 +7,7 @@ namespace FitnessTracker.Entities
     public class WorkoutExercise
     {
         [Key]
+        [JsonIgnore]
         public int UserWorkoutId { get; set; }
         [Key]
         public int ExerciseId { get; set; }

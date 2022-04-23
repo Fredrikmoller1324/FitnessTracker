@@ -42,19 +42,25 @@ namespace FitnessTracker.Data.Repos
             return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] including)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity,bool>> filter = null,params Expression<Func<TEntity, object>>[] including)
         {
             var query =  _dataContext.Set<TEntity>().AsQueryable();
 
-            if (including == null) return await query.ToListAsync();
-
-            including.ToList().ForEach(inludeEntity =>
+            if(filter != null)
             {
-                if (inludeEntity != null) 
+                query = query.Where(filter);
+            }
+
+            if (including != null)
+            {
+                including.ToList().ForEach(inludeEntity =>
                 {
-                    query = query.Include(inludeEntity);
-                } 
-            });
+                    if (inludeEntity != null)
+                    {
+                        query = query.Include(inludeEntity);
+                    }
+                });
+            }
 
             return await query.ToListAsync();
         }

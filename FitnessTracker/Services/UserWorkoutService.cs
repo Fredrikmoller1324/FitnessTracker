@@ -23,11 +23,18 @@ namespace FitnessTracker.Services
 
              _unitOfWork.UserWorkoutRepository.Create(mappedNewUserWorkout);
 
-            
-
             if (_unitOfWork.HasChangesAsync()) await _unitOfWork.CompleteAsync();
         }
 
-        
+        public async Task<IEnumerable<UserWorkoutDTO>> GetAllUserWorkouts(int userId)
+        {
+            var userWorkouts = await _unitOfWork.UserWorkoutRepository.GetAllAsync(x=>x.UserId == userId,include=>include.WorkoutExercises);
+
+            if (userWorkouts is null) throw new KeyNotFoundException($"User with id: {userId} has no user workouts");
+
+            var result = userWorkouts.Select(userworkout => _mapper.Map<UserWorkoutDTO>(userworkout)).ToList();
+
+            return result;
+        }
     }
 }
