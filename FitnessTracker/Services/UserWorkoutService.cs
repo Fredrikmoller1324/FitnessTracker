@@ -35,18 +35,21 @@ namespace FitnessTracker.Services
 
             if (userWorkouts is null) throw new KeyNotFoundException($"User with id: {userId} has no user workouts that has '{name}' in it's name");
 
-            var result = userWorkouts.Select(userWorkout => _mapper.Map<UserWorkoutDTO>(userWorkout)).ToList();
+            var result = userWorkouts.Select(
+                userWorkout => _mapper.Map<UserWorkoutDTO>(userWorkout)).ToList();
 
             return result;
         }
 
         public async Task<IEnumerable<UserWorkoutDTO>> GetAllUserWorkouts(int userId)
         {
-            var userWorkouts = await _unitOfWork.UserWorkoutRepository.GetAllAsync(x=>x.UserId == userId,include=>include.WorkoutExercises);
+            var userWorkouts = await _unitOfWork.UserWorkoutRepository.GetAllAsync(
+                x=>x.UserId == userId,include=>include.WorkoutExercises);
 
             if (userWorkouts is null) throw new KeyNotFoundException($"User with id: {userId} has no user workouts");
 
-            var result = userWorkouts.Select(userworkout => _mapper.Map<UserWorkoutDTO>(userworkout)).ToList();
+            var result = userWorkouts.Select(
+                userworkout => _mapper.Map<UserWorkoutDTO>(userworkout)).ToList();
 
             return result;
         }
