@@ -58,17 +58,6 @@ namespace FitnessTracker.Data.Repos
                 query = including(query);
             }
 
-            //if (including != null)
-            //{
-            //    including.ToList().ForEach(inludeEntity =>
-            //    {
-            //        if (inludeEntity != null)
-            //        {
-            //            query = query.Include(inludeEntity);
-            //        }
-            //    });
-            //}
-
             return await query.ToListAsync();
         }
 
