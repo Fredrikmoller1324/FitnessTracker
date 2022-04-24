@@ -8,5 +8,7 @@ namespace FitnessTracker.Interfaces
         Task CreateUserWorkoutAsync(UserWorkoutDTO userWorkout,int userId);
 
         Task<IEnumerable<UserWorkoutDTO>> GetAllUserWorkouts(int userId);
+
+        Task<IEnumerable<UserDTO>> GetAllSpecificUserWorkoutsByName(int userId, string name)
     }
 }
