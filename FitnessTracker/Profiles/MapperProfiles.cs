@@ -43,6 +43,7 @@ namespace FitnessTracker.Profiles
                 dest=>dest.WorkoutExercises,
                 opt=>opt.MapFrom(src=>src.WorkoutExercises)
                 ).ReverseMap();
+
             
         }
     }

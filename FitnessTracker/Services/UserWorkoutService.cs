@@ -2,6 +2,7 @@
 using FitnessTracker.Entities;
 using FitnessTracker.Entities.DTOs;
 using FitnessTracker.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTracker.Services
 {
@@ -30,8 +31,10 @@ namespace FitnessTracker.Services
         {
             var userWorkouts = await _unitOfWork.UserWorkoutRepository.GetAllAsync(
                 x=>x.UserId == userId &&
-                x.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase),
-                include=>include.WorkoutExercises);
+                x.Name.Contains(name),
+               src=>src
+               .Include(x=>x.WorkoutExercises)
+               .ThenInclude(x=>x.Exercise));
 
             if (userWorkouts is null) throw new KeyNotFoundException($"User with id: {userId} has no user workouts that has '{name}' in it's name");
 
@@ -44,7 +47,10 @@ namespace FitnessTracker.Services
         public async Task<IEnumerable<UserWorkoutDTO>> GetAllUserWorkouts(int userId)
         {
             var userWorkouts = await _unitOfWork.UserWorkoutRepository.GetAllAsync(
-                x=>x.UserId == userId,include=>include.WorkoutExercises);
+                x => x.UserId == userId,
+               src => src
+               .Include(x => x.WorkoutExercises)
+               .ThenInclude(x => x.Exercise));
 
             if (userWorkouts is null) throw new KeyNotFoundException($"User with id: {userId} has no user workouts");
 

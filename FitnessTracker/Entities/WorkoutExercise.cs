@@ -10,9 +10,9 @@ namespace FitnessTracker.Entities
         [JsonIgnore]
         public int UserWorkoutId { get; set; }
         [Key]
+        [JsonIgnore]
         public int ExerciseId { get; set; }
 
-        [JsonIgnore]
         public virtual Exercise Exercise { get; set; }
         [JsonIgnore]
         public virtual UserWorkout UserWorkout { get; set; }

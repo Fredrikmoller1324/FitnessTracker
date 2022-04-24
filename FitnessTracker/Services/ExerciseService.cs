@@ -3,6 +3,7 @@ using FitnessTracker.Entities;
 using FitnessTracker.Entities.DTOs;
 using FitnessTracker.Exceptions;
 using FitnessTracker.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTracker.Services
 {
@@ -19,7 +20,10 @@ namespace FitnessTracker.Services
 
         public async Task<IEnumerable<ExerciseDTO>> GetAllExercisesAsync()
         {
-           var allExercises = await _unitOfWork.ExerciseRepository.GetAllAsync(null,x=>x.ExerciseCategories);
+           var allExercises = await _unitOfWork.ExerciseRepository.GetAllAsync(
+               null,
+               src=>src.
+               Include(x=>x.ExerciseCategories));
 
             if (allExercises == null || !allExercises.Any()) throw new NullOrEmptyException("List of Exercises is null or empty");
 

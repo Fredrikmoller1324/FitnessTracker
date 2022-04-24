@@ -1,6 +1,7 @@
 ﻿using FitnessTracker.Entities;
 using FitnessTracker.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
 namespace FitnessTracker.Data.Repos
@@ -42,7 +43,8 @@ namespace FitnessTracker.Data.Repos
             return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity,bool>> filter = null,params Expression<Func<TEntity, object>>[] including)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity,bool>> filter = null,
+            Func<IQueryable<TEntity>,IIncludableQueryable<TEntity, object>> including = null)
         {
             var query =  _dataContext.Set<TEntity>().AsQueryable();
 
@@ -51,16 +53,21 @@ namespace FitnessTracker.Data.Repos
                 query = query.Where(filter);
             }
 
-            if (including != null)
+            if(including != null)
             {
-                including.ToList().ForEach(inludeEntity =>
-                {
-                    if (inludeEntity != null)
-                    {
-                        query = query.Include(inludeEntity);
-                    }
-                });
+                query = including(query);
             }
+
+            //if (including != null)
+            //{
+            //    including.ToList().ForEach(inludeEntity =>
+            //    {
+            //        if (inludeEntity != null)
+            //        {
+            //            query = query.Include(inludeEntity);
+            //        }
+            //    });
+            //}
 
             return await query.ToListAsync();
         }
