@@ -11,12 +11,10 @@ namespace FitnessTracker.Controllers
     public class ExerciseController : Controller
     {
         private readonly IExerciseService _exerciseService;
-        private readonly IConfiguration _config;
-
-        public ExerciseController(IExerciseService exerciseService, IConfiguration config)
+        
+        public ExerciseController(IExerciseService exerciseService)
         {
             _exerciseService = exerciseService;
-            _config = config;
         }
 
         [HttpGet("GetAllExercises")]
@@ -26,7 +24,7 @@ namespace FitnessTracker.Controllers
             {
                 var Exercises = await _exerciseService.GetAllExercisesAsync();
 
-                return Ok(Exercises.ToList());
+                return Ok(Exercises);
             }
             catch (Exception e)
             {
@@ -54,9 +52,9 @@ namespace FitnessTracker.Controllers
         {
             try
             {
-                await _exerciseService.CreateExerciseAsync(exercise);
+               var createdExercise= await _exerciseService.CreateExerciseAsync(exercise);
 
-                return Ok();
+                return Ok(createdExercise);
             }
             catch (Exception e)
             {
@@ -69,9 +67,9 @@ namespace FitnessTracker.Controllers
         {
             try
             {
-                await _exerciseService.DeleteExerciseAsync(exerciseId);
+                var deletedExercise = await _exerciseService.DeleteExerciseAsync(exerciseId);
 
-                return Ok();
+                return Ok(deletedExercise);
             }
             catch (Exception e)
             {

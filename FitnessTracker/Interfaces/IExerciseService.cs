@@ -9,8 +9,8 @@ namespace FitnessTracker.Interfaces
 
         Task<ExerciseDTO> GetByNameAsync(string exerciseName);
 
-        Task CreateExerciseAsync(ExerciseDTO exercise);
+        Task<Exercise> CreateExerciseAsync(ExerciseDTO exercise);
 
-        Task DeleteExerciseAsync(int key);
+        Task<Exercise> DeleteExerciseAsync(int key);
     }
 }

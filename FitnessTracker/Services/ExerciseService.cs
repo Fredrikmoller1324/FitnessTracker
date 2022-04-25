@@ -34,7 +34,7 @@ namespace FitnessTracker.Services
                 mappedExercises.Add(_mapper.Map<ExerciseDTO>(exercise));
             }
             
-            return mappedExercises;
+            return mappedExercises.ToList();
         }
 
         public async Task<ExerciseDTO> GetByNameAsync(string exerciseName)
@@ -46,7 +46,7 @@ namespace FitnessTracker.Services
             return _mapper.Map<ExerciseDTO>(exercise);
         }
 
-        public async Task DeleteExerciseAsync(int key)
+        public async Task<Exercise> DeleteExerciseAsync(int key)
         {
             var exerciseToDelete = _unitOfWork.ExerciseRepository.Delete(exercise => exercise.Id == key);
 
@@ -54,9 +54,10 @@ namespace FitnessTracker.Services
 
             if (_unitOfWork.HasChangesAsync()) await _unitOfWork.CompleteAsync();
 
+            return exerciseToDelete;
         }
 
-        public async Task CreateExerciseAsync(ExerciseDTO newExercise)
+        public async Task<Exercise> CreateExerciseAsync(ExerciseDTO newExercise)
         {
             var exerciseAlreadyExist = _unitOfWork.ExerciseRepository.Exists(e => string.Equals(e.Name,newExercise.Name, StringComparison.InvariantCultureIgnoreCase));
 
@@ -64,10 +65,14 @@ namespace FitnessTracker.Services
 
             var mappedNewExercise = _mapper.Map<Exercise>(newExercise);
 
-             _unitOfWork.ExerciseRepository.Create(mappedNewExercise);
+            var createdExercise = _unitOfWork.ExerciseRepository.Create(mappedNewExercise);
 
-            if (_unitOfWork.HasChangesAsync()) await _unitOfWork.CompleteAsync();
+            if (_unitOfWork.HasChangesAsync())
+            {
+                await _unitOfWork.CompleteAsync();
+            }
+
+            return createdExercise;
         }
-
     }
 }

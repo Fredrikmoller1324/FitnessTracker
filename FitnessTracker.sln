@@ -5,9 +5,11 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessTracker", "FitnessTracker\FitnessTracker.csproj", "{6E545D15-6C88-4F6F-A7D8-A4F8616315C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessTrackerTests", "FitnessTrackerTests\FitnessTrackerTests.csproj", "{5A306240-859D-4788-944D-3ED9D286A999}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailLibrary", "MailLibrary\MailLibrary.csproj", "{494641B8-766A-4AF8-8C61-AE28050A6F4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailLibrary", "MailLibrary\MailLibrary.csproj", "{494641B8-766A-4AF8-8C61-AE28050A6F4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessTrackerUnitTests", "FitnessTrackerUnitTests\FitnessTrackerUnitTests.csproj", "{6835F5A1-9333-4EB0-BFEB-355C31423B4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessTrackerIntegrationTests", "FitnessTrackerIntegrationTests\FitnessTrackerIntegrationTests.csproj", "{B13B5200-B494-4FE6-AA57-C1F12DEE1B37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +21,18 @@ Global
 		{6E545D15-6C88-4F6F-A7D8-A4F8616315C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E545D15-6C88-4F6F-A7D8-A4F8616315C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E545D15-6C88-4F6F-A7D8-A4F8616315C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A306240-859D-4788-944D-3ED9D286A999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A306240-859D-4788-944D-3ED9D286A999}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A306240-859D-4788-944D-3ED9D286A999}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A306240-859D-4788-944D-3ED9D286A999}.Release|Any CPU.Build.0 = Release|Any CPU
 		{494641B8-766A-4AF8-8C61-AE28050A6F4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{494641B8-766A-4AF8-8C61-AE28050A6F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{494641B8-766A-4AF8-8C61-AE28050A6F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{494641B8-766A-4AF8-8C61-AE28050A6F4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6835F5A1-9333-4EB0-BFEB-355C31423B4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6835F5A1-9333-4EB0-BFEB-355C31423B4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6835F5A1-9333-4EB0-BFEB-355C31423B4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6835F5A1-9333-4EB0-BFEB-355C31423B4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B13B5200-B494-4FE6-AA57-C1F12DEE1B37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B13B5200-B494-4FE6-AA57-C1F12DEE1B37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B13B5200-B494-4FE6-AA57-C1F12DEE1B37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B13B5200-B494-4FE6-AA57-C1F12DEE1B37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
