@@ -14,10 +14,12 @@ namespace FitnessTracker.Controllers
     public class UserWorkoutController : ControllerBase
     {
         private readonly IUserWorkoutService _userWorkoutService;
+        private readonly ILogger<UserWorkoutController> _logger;
 
-        public UserWorkoutController(IUserWorkoutService userWorkoutService)
+        public UserWorkoutController(IUserWorkoutService userWorkoutService, ILogger<UserWorkoutController> logger)
         {
             _userWorkoutService = userWorkoutService;
+            _logger = logger;
         }
 
         [HttpGet("GetAllUserWorkouts"), Authorize]
@@ -25,6 +27,8 @@ namespace FitnessTracker.Controllers
         {
             try
             {
+                _logger.LogInformation("in 'GetAllUserWorkouts'");
+
                 var userId = User.GetUserId();
 
                 var allUserWorkouts = await _userWorkoutService.GetAllUserWorkouts(userId);
@@ -44,6 +48,8 @@ namespace FitnessTracker.Controllers
         {
             try
             {
+                _logger.LogInformation("In 'GetAllUserWorkoutsByName'");
+
                 var userId = User.GetUserId();
 
                 var allUserWorkouts = await _userWorkoutService.GetAllSpecificUserWorkoutsByName(userId,userWorkoutName);
@@ -63,6 +69,25 @@ namespace FitnessTracker.Controllers
         {
             var userId = User.GetUserId();
             await _userWorkoutService.CreateUserWorkoutAsync(model, userId);
+        }
+
+        [HttpDelete("DeleteUserWorkout"), Authorize]
+        public async Task<IActionResult> DeleteUserWorkout(string userWorkoutName)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userWorkoutName)) return BadRequest();
+
+                var userId = User.GetUserId();
+
+                var deletedUserWorkout = await _userWorkoutService.DeleteUserWorkoutAsync(userWorkoutName, userId);
+
+                return Ok(deletedUserWorkout);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
     }
 }

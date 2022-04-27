@@ -3,6 +3,7 @@ using FitnessTracker.Entities;
 using FitnessTracker.Entities.DTOs;
 using FitnessTracker.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,13 @@ namespace FitnessTrackerUnitTests
     public class ExerciseControllerTests
     {
         private readonly Mock<IExerciseService> _mockRepo;
+        private readonly Mock<ILogger<ExerciseController>> _mockLogger;
         private readonly ExerciseController _controller;
         public ExerciseControllerTests()
         {
             _mockRepo = new Mock<IExerciseService>();
-            _controller = new ExerciseController(_mockRepo.Object);
+            _mockLogger = new Mock<ILogger<ExerciseController>>();
+            _controller = new ExerciseController(_mockRepo.Object, (ILogger<ExerciseController>)_mockLogger);
         }
 
         [Fact]

@@ -1,15 +1,16 @@
 ﻿using FitnessTracker.Data;
 using FitnessTracker.Data.Auth;
+using FitnessTracker.Data.Models.Auth;
 using FitnessTracker.Entities;
 using FitnessTracker.Entities.DTOs;
+using FitnessTracker.Helpers;
 using FitnessTracker.Interfaces;
+using FitnessTracker.Services;
 using MailLibrary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
+
 
 namespace FitnessTracker.Controllers
 {
@@ -20,12 +21,15 @@ namespace FitnessTracker.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _config;
         private readonly IMailService _mailService;
+        private readonly IChangePasswordService _passwordService;
 
-        public AuthController(IUnitOfWork unitOfWork, IConfiguration config, IMailService mailService)
+        public AuthController(IUnitOfWork unitOfWork, IConfiguration config,
+            IMailService mailService, IChangePasswordService passwordService)
         {
             _unitOfWork = unitOfWork;
             _config = config;
             _mailService = mailService;
+            _passwordService = passwordService;
         }
 
         [HttpPost("Register")]
@@ -81,7 +85,7 @@ namespace FitnessTracker.Controllers
                     throw new KeyNotFoundException($"Username or password is incorrect");
                 }
 
-                string token = CreateToken(user);
+                string token = TokenHandler.CreateLoginToken(user,_config);
                 return Ok(token);
             }
             catch(Exception e)
@@ -90,29 +94,26 @@ namespace FitnessTracker.Controllers
             }
         }
 
-
-        private string CreateToken(User user)
+        [HttpPost("ChangePassword"), Authorize]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username)
-            };
+            if (changePasswordRequest.NewPassword != changePasswordRequest.ConfirmNewPassword) return BadRequest("New password and confirm new password is not equal");
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _config.GetSection("AppSettings:Token").Value));
+            var loggedInUsername = User.GetUsername();
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var user = await  _unitOfWork.UserRepository.GetUserByUsername(loggedInUsername);
 
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials: creds
-                );
+            if (user is null) return NotFound($"user with username '{StringEncryption.Decrypt(loggedInUsername)}' was not found");
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            var result = _passwordService.ChangePassword(user, changePasswordRequest.CurrentPassword, changePasswordRequest.NewPassword, changePasswordRequest.ConfirmNewPassword);
 
-            return jwt;
+            if (result is null) return StatusCode(500, "update password was unsuccesful");
+
+            await _unitOfWork.CompleteAsync();
+
+            return Ok("Password was successfully updated");
+
         }
+
     }
 }

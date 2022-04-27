@@ -11,10 +11,12 @@ namespace FitnessTracker.Controllers
     public class ExerciseController : Controller
     {
         private readonly IExerciseService _exerciseService;
-        
-        public ExerciseController(IExerciseService exerciseService)
+        private readonly ILogger<ExerciseController> _logger;
+
+        public ExerciseController(IExerciseService exerciseService, ILogger<ExerciseController> logger)
         {
             _exerciseService = exerciseService;
+            _logger = logger;
         }
 
         [HttpGet("GetAllExercises")]
@@ -22,6 +24,7 @@ namespace FitnessTracker.Controllers
         {
             try
             {
+                _logger.LogInformation("Getting all exercices");
                 var Exercises = await _exerciseService.GetAllExercisesAsync();
 
                 return Ok(Exercises);

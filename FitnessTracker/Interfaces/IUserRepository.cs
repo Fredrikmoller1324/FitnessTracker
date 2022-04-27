@@ -7,6 +7,6 @@ namespace FitnessTracker.Interfaces
         Task AddUser(User user);
         Task<IEnumerable<User>> GetUsersAsync();
         Task<User> GetUserByUsername(string username);
-        void UpdateUser(User user);
+        void UpdateUserAsync(User user);
     }
 }

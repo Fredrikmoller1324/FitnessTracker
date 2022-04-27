@@ -32,9 +32,9 @@ namespace FitnessTracker.Data.Repos
             return await _context.Users.ToListAsync();
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Update(user);
         }
     }
 }

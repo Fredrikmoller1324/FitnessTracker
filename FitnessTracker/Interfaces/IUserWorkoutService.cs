@@ -10,5 +10,7 @@ namespace FitnessTracker.Interfaces
         Task<IEnumerable<UserWorkoutDTO>> GetAllUserWorkouts(int userId);
 
         Task<IEnumerable<UserWorkoutDTO>> GetAllSpecificUserWorkoutsByName(int userId, string name);
+
+        Task<UserWorkout> DeleteUserWorkoutAsync(string userWorkoutName, int userId);
     }
 }
