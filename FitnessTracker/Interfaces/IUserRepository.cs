@@ -8,5 +8,6 @@ namespace FitnessTracker.Interfaces
         Task<IEnumerable<User>> GetUsersAsync();
         Task<User> GetUserByUsername(string username);
         void UpdateUserAsync(User user);
+        Task<User> GetUserById(int id);
     }
 }

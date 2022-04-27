@@ -115,5 +115,47 @@ namespace FitnessTracker.Controllers
 
         }
 
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(string username)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByUsername(StringEncryption.Encrypt(username));
+
+            if (user is null) return NotFound($"user with username {username} doesn't exist");
+
+            var token = TokenHandler.CreatePasswordResetToken(user,_config);
+
+            var resetLink = $"https://localhost:7146/api/Auth/ResetPassword/{user.Id}/{token}";
+
+            var request = new MailRequest
+            {
+                Subject = "Reset Password",
+                Body = $"Password reset was requested by {user.FirstName} \nplease click the link below to reset your password \n" +
+                $"{resetLink}",
+                ToEmail = $"{username}"
+            };
+            await _mailService.SendEmailAsync(request);
+
+            return Ok();
+        }
+
+        [HttpGet("ResetPassword/{id}/{token}")]
+        public async Task<IActionResult> ResetPassword([FromRoute] int id, string token)
+        {
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserById(id);
+
+                var tokenIsValid = TokenHandler.ValidateToken(token, _config);
+
+                //TODO redirect to frontend reset password form
+                return Redirect(""); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            
+            
+        }
     }
 }

@@ -18,6 +18,15 @@ namespace FitnessTracker.Data.Repos
             await _context.Users.AddAsync(user);
         }
 
+        public async Task<User> GetUserById(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user is null) throw new KeyNotFoundException($"User with id: '{id}' does not exist");
+
+            return user;
+        }
+
         public async Task<User> GetUserByUsername(string username)
         {
             
