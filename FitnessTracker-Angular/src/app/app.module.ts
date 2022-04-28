@@ -9,6 +9,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { AuthComponent } from './auth/auth.component';
 import { HomeComponent } from './components/home/home.component'
 import { LoadingSpinnerComponent } from './Shared/loading-spinner/loading-spinner.component';
+import { HeaderComponent } from './components/header/header.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { LoadingSpinnerComponent } from './Shared/loading-spinner/loading-spinne
     PasswordRecoveryComponent,
     AuthComponent,
     HomeComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -10,6 +12,8 @@ export class AuthService {
     private fb: FormBuilder,
     private router: Router
   ) {}
+
+  token = new BehaviorSubject<string>(null);
   readonly BaseURL = 'https://localhost:7146/api';
 
   formModel = this.fb.group({
@@ -50,7 +54,12 @@ export class AuthService {
   login(formData: any) {
     return this.http.post(this.BaseURL + '/Auth/Login', formData, {
       responseType: 'text',
-    });
+    })
+    .pipe(
+      tap(res=>{
+        this.token.next(res);
+      })
+    )
   }
 
   logout() {
