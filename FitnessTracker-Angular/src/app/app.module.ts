@@ -8,6 +8,8 @@ import { PasswordRecoveryComponent } from './components/login/password-recovery/
 import {HttpClientModule} from '@angular/common/http';
 import { AuthComponent } from './auth/auth.component';
 import { HomeComponent } from './components/home/home.component'
+import { LoadingSpinnerComponent } from './Shared/loading-spinner/loading-spinner.component';
+
 
 @NgModule({
   declarations: [
@@ -15,7 +17,8 @@ import { HomeComponent } from './components/home/home.component'
     LoginComponent,
     PasswordRecoveryComponent,
     AuthComponent,
-    HomeComponent
+    HomeComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
