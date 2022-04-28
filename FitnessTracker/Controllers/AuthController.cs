@@ -33,13 +33,13 @@ namespace FitnessTracker.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserDTO newUser)
+        public async Task<ActionResult<string>> Register(UserDTO newUser)
         {
             try
             {
                 var allUsers = await _unitOfWork.UserRepository.GetUsersAsync();
 
-                if (allUsers.Any(x => x.Username == newUser.UserName)) return StatusCode(409, "");
+                if (allUsers.Any(x => x.Username == StringEncryption.Encrypt(newUser.UserName))) return StatusCode(409, $"User with username: '{newUser.UserName}' already exist");
 
                 string encryptedUsername = StringEncryption.Encrypt(newUser.UserName);
 
@@ -53,14 +53,17 @@ namespace FitnessTracker.Controllers
 
                 if (await _unitOfWork.CompleteAsync()) 
                 {
-                    var request = new MailRequest
-                    {
-                        Subject = "Registred",
-                        Body = $"Welcome to Fitnesstracker, {newUser.FirstName} {newUser.LastName}",
-                        ToEmail = $"{newUser.UserName}"
-                    };
-                    await _mailService.SendEmailAsync(request);
-                    return StatusCode(201);
+                    //var request = new MailRequest
+                    //{
+                    //    Subject = "Registred",
+                    //    Body = $"Welcome to Fitnesstracker, {newUser.FirstName} {newUser.LastName}",
+                    //    ToEmail = $"{newUser.UserName}"
+                    //};
+                    //await _mailService.SendEmailAsync(request);
+
+                    var newRegistredUser = await _unitOfWork.UserRepository.GetUserByUsername(encryptedUsername);
+                    string token = TokenHandler.CreateLoginToken(newRegistredUser, _config);
+                    return Ok(token);
                 } 
 
                 return StatusCode(500);
