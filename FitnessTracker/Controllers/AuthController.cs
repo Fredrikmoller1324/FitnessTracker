@@ -51,7 +51,7 @@ namespace FitnessTracker.Controllers
                     password = BCrypt.Net.BCrypt.HashPassword(newUser.Password)
                 });
 
-                if (await _unitOfWork.CompleteAsync()) 
+                if (await _unitOfWork.CompleteAsync())
                 {
                     //var request = new MailRequest
                     //{
@@ -64,7 +64,7 @@ namespace FitnessTracker.Controllers
                     var newRegistredUser = await _unitOfWork.UserRepository.GetUserByUsername(encryptedUsername);
                     string token = TokenHandler.CreateLoginToken(newRegistredUser, _config);
                     return Ok(token);
-                } 
+                }
 
                 return StatusCode(500);
             }
@@ -76,7 +76,7 @@ namespace FitnessTracker.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<string>> Login(LoginCredentials credentials)
+        public async Task<IActionResult> Login(LoginCredentials credentials)
         {
             try
             {
@@ -88,10 +88,16 @@ namespace FitnessTracker.Controllers
                     throw new KeyNotFoundException($"Username or password is incorrect");
                 }
 
-                string token = TokenHandler.CreateLoginToken(user,_config);
-                return Ok(token);
+                string token = TokenHandler.CreateLoginToken(user, _config);
+                return Ok(new
+                {
+                    access_token = token,
+                    email = credentials.UserName,
+                    userId = user.Id,
+                    expiresIn = Math.Ceiling((DateTime.Now.AddHours(2) - DateTime.Now).TotalSeconds).ToString()
+                });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return StatusCode(500, e.Message);
             }
@@ -104,7 +110,7 @@ namespace FitnessTracker.Controllers
 
             var loggedInUsername = User.GetUsername();
 
-            var user = await  _unitOfWork.UserRepository.GetUserByUsername(loggedInUsername);
+            var user = await _unitOfWork.UserRepository.GetUserByUsername(loggedInUsername);
 
             if (user is null) return NotFound($"user with username '{StringEncryption.Decrypt(loggedInUsername)}' was not found");
 
@@ -125,7 +131,7 @@ namespace FitnessTracker.Controllers
 
             if (user is null) return NotFound($"user with username {username} doesn't exist");
 
-            var token = TokenHandler.CreatePasswordResetToken(user,_config);
+            var token = TokenHandler.CreatePasswordResetToken(user, _config);
 
             var resetLink = $"https://localhost:7146/api/Auth/ResetPassword/{user.Id}/{token}";
 
@@ -138,7 +144,13 @@ namespace FitnessTracker.Controllers
             };
             await _mailService.SendEmailAsync(request);
 
-            return Ok();
+            return Ok(new
+            {
+                access_token = token,
+                email = username,
+                userId = user.Id,
+                expiresIn = Math.Ceiling((DateTime.Now.AddMinutes(15) - DateTime.Now).TotalSeconds).ToString()
+            }); ;
         }
 
         [HttpGet("ResetPassword/{id}/{token}")]
@@ -151,14 +163,14 @@ namespace FitnessTracker.Controllers
                 var tokenIsValid = TokenHandler.ValidateToken(token, _config);
 
                 //TODO redirect to frontend reset password form
-                return Redirect(""); 
+                return Redirect("");
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-            
-            
+
+
         }
     }
 }

@@ -3,7 +3,8 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import jwtDecode from 'jwt-decode';
 import { Observable } from 'rxjs/internal/Observable';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthResponseData, AuthService } from 'src/app/auth/auth.service';
+import { User } from 'src/app/auth/user.model';
 
 @Component({
   selector: 'app-login',
@@ -43,7 +44,7 @@ export class LoginComponent implements OnInit {
     }
     this.error = null;
 
-    let authObs: Observable<string>;
+    let authObs: Observable<AuthResponseData>;
 
     this.isLoading = true;
 
@@ -60,8 +61,7 @@ export class LoginComponent implements OnInit {
     }
 
     authObs.subscribe(
-      (res: string) => {
-        localStorage.setItem('token', res);
+      (res: AuthResponseData) => {
         this.isLoading = false;
         this.router.navigateByUrl('/home');
       },
