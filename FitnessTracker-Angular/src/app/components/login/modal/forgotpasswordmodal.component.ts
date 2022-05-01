@@ -17,10 +17,14 @@ export class ForgotPasswordModal implements OnInit {
     UserName: '',
   };
 
+  successSent = false;
   isLoading = false;
   error: string = null;
-  
-  constructor(private authService:AuthService,public activeModal: NgbActiveModal) {}
+
+  constructor(
+    private authService: AuthService,
+    public activeModal: NgbActiveModal
+  ) {}
 
   ngOnInit(): void {}
 
@@ -35,17 +39,20 @@ export class ForgotPasswordModal implements OnInit {
     this.isLoading = true;
 
     authObs = this.authService.forgotPassword(form.value);
-  
+
     authObs.subscribe(
       (res) => {
         this.isLoading = false;
-        console.log('skickat mail')
-        
+        this.error = null;
+        this.successSent = true;
       },
       (err) => {
         console.log(err.error);
         this.error = err.error;
         this.isLoading = false;
+        this.successSent = false;
+        console.log('successent', this.successSent);
+        console.log('errordisplay', this.error);
       }
     );
 

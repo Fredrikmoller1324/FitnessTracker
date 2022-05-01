@@ -32,7 +32,6 @@ export class AuthService {
     return this.http.post<AuthResponseData>(this.BaseURL + '/Auth/Register', formData)
     .pipe(
       tap((res) => {
-        console.log('RETURNEDFROMDB', res);
         this.handleAuthentication(
           res.name,
           res.email,
@@ -49,7 +48,6 @@ export class AuthService {
       .post<AuthResponseData>(this.BaseURL + '/Auth/Login', formData, {})
       .pipe(
         tap((res) => {
-          console.log('RETURNEDFROMDB', res);
           this.handleAuthentication(
             res.name,
             res.email,
@@ -74,7 +72,6 @@ export class AuthService {
       _token: string;
       _tokenExperiationDate: string;
     } = JSON.parse(localStorage.getItem('userData'));
-    console.log('userdata', userData);
     if (!userData) {
       return;
     }
@@ -96,7 +93,6 @@ export class AuthService {
   }
 
   logout() {
-    console.log('calling logout');
     this.user.next(null);
     this.router.navigate(['/login']);
     localStorage.removeItem('userData');
@@ -121,7 +117,6 @@ export class AuthService {
     this.user.next(user);
     // multiply by 1000 to convert s to ms
     this.autoLogout(expiresIn * 1000);
-    console.log('In handle authentication: ', JSON.stringify(user));
     localStorage.setItem('userData', JSON.stringify(user));
   }
 }

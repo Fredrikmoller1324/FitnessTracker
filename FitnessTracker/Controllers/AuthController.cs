@@ -155,14 +155,6 @@ namespace FitnessTracker.Controllers
             await _mailService.SendEmailAsync(request);
 
             return Ok();
-            //return Ok(new
-            //{
-            //    access_token = token,
-            //    name = $"{user.FirstName} {user.LastName}",
-            //    email = username,
-            //    userId = user.Id,
-            //    expiresIn = Math.Ceiling((DateTime.Now.AddMinutes(15) - DateTime.Now).TotalSeconds).ToString()
-            //});
         }
 
         [HttpGet("ResetPassword/{id}/{token}")]
