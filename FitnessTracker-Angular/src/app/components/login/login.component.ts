@@ -51,13 +51,7 @@ export class LoginComponent implements OnInit {
     if (this.isLoginMode) {
       authObs = this.service.login(form.value);
     } else {
-      console.log('register?');
-      // authObs = this.service.register(form.value).subscribe(
-      //   (res: string) =>{
-      //     localStorage.setItem('token',res);
-      //     this.router.navigateByUrl('/home')
-      //   }
-      // )
+      authObs = this.service.signup(form.value);
     }
 
     authObs.subscribe(

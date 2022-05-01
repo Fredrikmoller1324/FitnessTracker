@@ -33,7 +33,7 @@ namespace FitnessTracker.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult<string>> Register(UserDTO newUser)
+        public async Task<IActionResult> Register(UserDTO newUser)
         {
             try
             {
@@ -63,7 +63,14 @@ namespace FitnessTracker.Controllers
 
                     var newRegistredUser = await _unitOfWork.UserRepository.GetUserByUsername(encryptedUsername);
                     string token = TokenHandler.CreateLoginToken(newRegistredUser, _config);
-                    return Ok(token);
+                    return Ok(new
+                    {
+                        access_token = token,
+                        name = $"{newRegistredUser.FirstName} {newRegistredUser.LastName}",
+                        email = StringEncryption.Decrypt(newRegistredUser.Username),
+                        userId = newRegistredUser.Id,
+                        expiresIn = Math.Ceiling((DateTime.Now.AddHours(2) - DateTime.Now).TotalSeconds).ToString()
+                    });
                 }
 
                 return StatusCode(500);
@@ -92,6 +99,7 @@ namespace FitnessTracker.Controllers
                 return Ok(new
                 {
                     access_token = token,
+                    name = $"{user.FirstName} {user.LastName}",
                     email = credentials.UserName,
                     userId = user.Id,
                     expiresIn = Math.Ceiling((DateTime.Now.AddHours(2) - DateTime.Now).TotalSeconds).ToString()
@@ -147,6 +155,7 @@ namespace FitnessTracker.Controllers
             return Ok(new
             {
                 access_token = token,
+                name = $"{user.FirstName} {user.LastName}",
                 email = username,
                 userId = user.Id,
                 expiresIn = Math.Ceiling((DateTime.Now.AddMinutes(15) - DateTime.Now).TotalSeconds).ToString()

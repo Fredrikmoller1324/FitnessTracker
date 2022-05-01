@@ -8,6 +8,7 @@ import { User } from './user.model';
 
 export interface AuthResponseData {
   access_token: string;
+  name: string;
   email: string;
   expiresIn: string;
   userId: string;
@@ -26,39 +27,21 @@ export class AuthService {
 
   readonly BaseURL = 'https://localhost:7146/api';
 
-  formModel = this.fb.group({
-    UserName: ['', Validators.required],
-    Email: ['', Validators.email],
-    FullName: [''],
-    Passwords: this.fb.group(
-      {
-        Password: ['', [Validators.required, Validators.minLength(4)]],
-        ConfirmPassword: ['', Validators.required],
-      },
-      { validator: this.comparePasswords }
-    ),
-  });
-
-  comparePasswords(fb: FormGroup) {
-    let confirmPasswordControl = fb.get('ConfirmPassword');
-    if (
-      confirmPasswordControl?.errors == null ||
-      'passwordMismatch' in confirmPasswordControl?.errors
-    ) {
-      if (fb.get('Password')?.value != confirmPasswordControl?.value)
-        confirmPasswordControl?.setErrors({ passwordMismatch: true });
-      else confirmPasswordControl?.setErrors(null);
-    }
-  }
-
-  signup() {
-    var body = {
-      UserName: this.formModel.value.UserName,
-      FirstName: this.formModel.value.FirstName,
-      LastName: this.formModel.value.LastName,
-      Password: this.formModel.value.Passwords.Password,
-    };
-    return this.http.post(this.BaseURL + '/Auth/Register', body);
+  signup(formData: any) {
+    console.log('in signup');
+    return this.http.post<AuthResponseData>(this.BaseURL + '/Auth/Register', formData)
+    .pipe(
+      tap((res) => {
+        console.log('RETURNEDFROMDB', res);
+        this.handleAuthentication(
+          res.name,
+          res.email,
+          res.userId,
+          res.access_token,
+          +res.expiresIn
+        );
+      })
+    );
   }
 
   login(formData: any) {
@@ -68,6 +51,7 @@ export class AuthService {
         tap((res) => {
           console.log('RETURNEDFROMDB', res);
           this.handleAuthentication(
+            res.name,
             res.email,
             res.userId,
             res.access_token,
@@ -81,6 +65,7 @@ export class AuthService {
     const userData: {
       email: string;
       id: string;
+      name: string;
       _token: string;
       _tokenExperiationDate: string;
     } = JSON.parse(localStorage.getItem('userData'));
@@ -88,23 +73,15 @@ export class AuthService {
     if (!userData) {
       return;
     }
-    console.log(
-      'expirationdate before loadedUsercheck',
-      userData._tokenExperiationDate
-    );
     const loadedUser = new User(
       userData.id,
       userData.email,
+      userData.name,
       userData._token,
       new Date(userData._tokenExperiationDate)
     );
-    
 
     if (loadedUser) {
-      console.log(
-        'expirationdate in loadedUser',
-        userData._tokenExperiationDate
-      );
       this.user.next(loadedUser);
       const expirationDuration =
         new Date(userData._tokenExperiationDate).getTime() -
@@ -121,13 +98,13 @@ export class AuthService {
   }
 
   autoLogout(expirationDuration: number) {
-    console.log(this.tokenExpirationTimer)
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);
   }
 
   private handleAuthentication(
+    name: string,
     email: string,
     userId: string,
     token: string,
@@ -135,8 +112,9 @@ export class AuthService {
   ) {
     console.log('expiresIn', expiresIn);
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new User(userId, email, token, expirationDate);
+    const user = new User(userId, email, name, token, expirationDate);
     this.user.next(user);
+    // multiply by 1000 to convert s to ms
     this.autoLogout(expiresIn * 1000);
     console.log('In handle authentication: ', JSON.stringify(user));
     localStorage.setItem('userData', JSON.stringify(user));
