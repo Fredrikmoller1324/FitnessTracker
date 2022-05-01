@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import jwtDecode from 'jwt-decode';
 import { Observable } from 'rxjs/internal/Observable';
 import { AuthResponseData, AuthService } from 'src/app/auth/auth.service';
-import { User } from 'src/app/auth/user.model';
+import { ForgotPasswordModal } from 'src/app/components/login/modal/forgotpasswordmodal.component';
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbModalOptions,
+} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +16,8 @@ import { User } from 'src/app/auth/user.model';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  modalOptions: NgbModalOptions;
+
   formModel = {
     UserName: '',
     Password: '',
@@ -23,7 +29,16 @@ export class LoginComponent implements OnInit {
   isLoading = false;
   error: string = null;
 
-  constructor(private service: AuthService, private router: Router) {}
+  constructor(
+    private modalService: NgbModal,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.modalOptions = {
+      backdrop: 'static',
+      backdropClass: 'customBackdrop',
+    };
+  }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
@@ -35,7 +50,9 @@ export class LoginComponent implements OnInit {
   }
 
   OnForgotPassword() {
-    console.log('hej');
+    const modalRef = this.modalService.open(ForgotPasswordModal, { size: 'md',centered:true });
+    modalRef.componentInstance.my_modal_title = 'Forgot password';
+    modalRef.componentInstance.content = 'Enter you email:'; 
   }
 
   onSubmit(form: NgForm) {
@@ -49,9 +66,9 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      authObs = this.service.login(form.value);
+      authObs = this.authService.login(form.value);
     } else {
-      authObs = this.service.signup(form.value);
+      authObs = this.authService.signup(form.value);
     }
 
     authObs.subscribe(

@@ -132,9 +132,11 @@ namespace FitnessTracker.Controllers
 
         }
 
-        [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(string username)
+        [HttpPost("ForgotPassword/{username}")]
+        public async Task<IActionResult> ForgotPassword([FromRoute] string username)
         {
+            if (username == null) return BadRequest("no email was provided");
+
             var user = await _unitOfWork.UserRepository.GetUserByUsername(StringEncryption.Encrypt(username));
 
             if (user is null) return NotFound($"user with username {username} doesn't exist");
@@ -152,14 +154,15 @@ namespace FitnessTracker.Controllers
             };
             await _mailService.SendEmailAsync(request);
 
-            return Ok(new
-            {
-                access_token = token,
-                name = $"{user.FirstName} {user.LastName}",
-                email = username,
-                userId = user.Id,
-                expiresIn = Math.Ceiling((DateTime.Now.AddMinutes(15) - DateTime.Now).TotalSeconds).ToString()
-            }); ;
+            return Ok();
+            //return Ok(new
+            //{
+            //    access_token = token,
+            //    name = $"{user.FirstName} {user.LastName}",
+            //    email = username,
+            //    userId = user.Id,
+            //    expiresIn = Math.Ceiling((DateTime.Now.AddMinutes(15) - DateTime.Now).TotalSeconds).ToString()
+            //});
         }
 
         [HttpGet("ResetPassword/{id}/{token}")]

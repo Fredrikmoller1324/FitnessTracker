@@ -61,6 +61,11 @@ export class AuthService {
       );
   }
 
+  forgotPassword(formData: any){
+    console.log('email??',formData.UserName)
+    return this.http.post(this.BaseURL + `/Auth/ForgotPassword/${formData.UserName}`,{})
+  }
+
   autoLogin() {
     const userData: {
       email: string;
