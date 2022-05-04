@@ -12,7 +12,7 @@ namespace FitnessTracker.Entities
         public string Username { get; set; } = string.Empty;
         
         [Required]
-        public string password { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
 
         [Required]
         public string FirstName { get; set; } = string.Empty;

@@ -17,9 +17,9 @@ namespace FitnessTracker.Services
         }
         public User ChangePassword(User user, string currentPassword, string newPassword, string ConfirmNewPassword)
         {
-            if (!BCrypt.Net.BCrypt.Verify (currentPassword,user.password)) throw new KeyNotFoundException($"current password is incorrect");
+            if (!BCrypt.Net.BCrypt.Verify (currentPassword,user.Password)) throw new KeyNotFoundException($"current password is incorrect");
 
-            user.password = BCrypt.Net.BCrypt.HashPassword(ConfirmNewPassword);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(ConfirmNewPassword);
             _unitOfWork.UserRepository.UpdateUserAsync(user);
 
             return user;

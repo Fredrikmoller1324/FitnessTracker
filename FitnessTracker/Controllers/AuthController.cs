@@ -39,7 +39,10 @@ namespace FitnessTracker.Controllers
             {
                 var allUsers = await _unitOfWork.UserRepository.GetUsersAsync();
 
-                if (allUsers.Any(x => x.Username == StringEncryption.Encrypt(newUser.UserName))) return StatusCode(409, $"User with username: '{newUser.UserName}' already exist");
+                if (allUsers.Any(x => x.Username == StringEncryption.Encrypt(newUser.UserName)))
+                {
+                    return StatusCode(409, $"User with username: '{newUser.UserName}' already exist");
+                }
 
                 string encryptedUsername = StringEncryption.Encrypt(newUser.UserName);
 
@@ -48,18 +51,18 @@ namespace FitnessTracker.Controllers
                     Username = encryptedUsername,
                     FirstName = newUser.FirstName,
                     LastName = newUser.LastName,
-                    password = BCrypt.Net.BCrypt.HashPassword(newUser.Password)
+                    Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password)
                 });
 
                 if (await _unitOfWork.CompleteAsync())
                 {
-                    //var request = new MailRequest
-                    //{
-                    //    Subject = "Registred",
-                    //    Body = $"Welcome to Fitnesstracker, {newUser.FirstName} {newUser.LastName}",
-                    //    ToEmail = $"{newUser.UserName}"
-                    //};
-                    //await _mailService.SendEmailAsync(request);
+                    var request = new MailRequest
+                    {
+                        Subject = "Registred",
+                        Body = $"Welcome to Fitnesstracker, {newUser.FirstName} {newUser.LastName}",
+                        ToEmail = $"{newUser.UserName}"
+                    };
+                    await _mailService.SendEmailAsync(request);
 
                     var newRegistredUser = await _unitOfWork.UserRepository.GetUserByUsername(encryptedUsername);
                     string token = TokenHandler.CreateLoginToken(newRegistredUser, _config);
@@ -90,7 +93,7 @@ namespace FitnessTracker.Controllers
                 var encryptedUsername = StringEncryption.Encrypt(credentials.UserName);
                 var user = await _unitOfWork.UserRepository.GetUserByUsername(encryptedUsername);
 
-                if (user == null || !BCrypt.Net.BCrypt.Verify(credentials.Password, user.password))
+                if (user == null || !BCrypt.Net.BCrypt.Verify(credentials.Password, user.Password))
                 {
                     throw new KeyNotFoundException($"Username or password is incorrect");
                 }
@@ -122,7 +125,11 @@ namespace FitnessTracker.Controllers
 
             if (user is null) return NotFound($"user with username '{StringEncryption.Decrypt(loggedInUsername)}' was not found");
 
-            var result = _passwordService.ChangePassword(user, changePasswordRequest.CurrentPassword, changePasswordRequest.NewPassword, changePasswordRequest.ConfirmNewPassword);
+            var result = _passwordService.ChangePassword(
+                user,
+                changePasswordRequest.CurrentPassword,
+                changePasswordRequest.NewPassword,
+                changePasswordRequest.ConfirmNewPassword);
 
             if (result is null) return StatusCode(500, "update password was unsuccesful");
 

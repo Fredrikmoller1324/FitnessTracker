@@ -50,8 +50,6 @@ namespace FitnessTrackerIntegrationTests
                     });
                 });
             _client = appFactory.CreateClient();
-            
-         
         }
 
         protected async Task<Exercise> CreateExercicseAsync(ExerciseDTO exercise)

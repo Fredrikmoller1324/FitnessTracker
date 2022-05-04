@@ -2,17 +2,17 @@
 {
     public static class StringEncryption
     {
-        public static string Decrypt(string encrString)
+        public static string Decrypt(string encryptedString)
         {
-            var b = Convert.FromBase64String(encrString);
-            var decrypted = System.Text.ASCIIEncoding.ASCII.GetString(b);
+            var b = Convert.FromBase64String(encryptedString);
+            var decrypted = System.Text.Encoding.ASCII.GetString(b);
 
             return decrypted;
         }
 
-        public static string Encrypt(string stringToEcncrypt)
+        public static string Encrypt(string stringToEncrypt)
         {
-            byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(stringToEcncrypt);
+            byte[] b = System.Text.Encoding.ASCII.GetBytes(stringToEncrypt);
             string encrypted = Convert.ToBase64String(b);
             return encrypted;
         }
