@@ -1,0 +1,13 @@
+#datatableexample{
+    //background-color: #66FCF1;
+    background-color: #1F2833;
+    color: #66FCF1;
+    border-radius: 10px;
+    thead{
+        border-bottom: 2px solid white;
+    }
+
+    tbody > tr:last-child > td {
+        border-bottom: 0;
+    }
+}

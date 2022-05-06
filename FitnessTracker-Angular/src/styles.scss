@@ -1,15 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 
-body,html{
-    height: 100%;
-    width: 100%;
-    background-color: #0B0C10;
+body,
+html {
+  height: 100%;
+  width: 100%;
+  background-color: #0b0c10;
 }
 
-a{
-    text-decoration: none!Important;
-    outline: none;
-    cursor: pointer;
+a {
+  text-decoration: none !important;
+  outline: none;
+  cursor: pointer;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 // .app-background-image{
@@ -25,7 +32,6 @@ a{
 // }
 
 .btn:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
+  outline: none;
+  box-shadow: none;
+}

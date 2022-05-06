@@ -1,9 +1,15 @@
 .bg {
     /* The image used */
-    background-image: url("../assets/bild1.jpg");
+    background-image: linear-gradient(rgba(36, 32, 32, 0.5), rgba(26, 23, 23, 0.5)), url("/../assets/bild1.jpg");
   
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    width: 100vw;
+    height: 94vh;
+  }
+
+  h1{
+    color: #66FCF1;
   }

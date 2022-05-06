@@ -117,25 +117,33 @@ namespace FitnessTracker.Controllers
         [HttpPost("ChangePassword"), Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
-            if (changePasswordRequest.NewPassword != changePasswordRequest.ConfirmNewPassword) return BadRequest("New password and confirm new password is not equal");
+            try
+            {
+                if (changePasswordRequest.NewPassword != changePasswordRequest.ConfirmNewPassword) return BadRequest("New password and confirm new password is not equal");
 
-            var loggedInUsername = User.GetUsername();
+                var loggedInUsername = User.GetUsername();
 
-            var user = await _unitOfWork.UserRepository.GetUserByUsername(loggedInUsername);
+                var user = await _unitOfWork.UserRepository.GetUserByUsername(loggedInUsername);
 
-            if (user is null) return NotFound($"user with username '{StringEncryption.Decrypt(loggedInUsername)}' was not found");
+                if (user is null) return NotFound($"user with username '{StringEncryption.Decrypt(loggedInUsername)}' was not found");
 
-            var result = _passwordService.ChangePassword(
-                user,
-                changePasswordRequest.CurrentPassword,
-                changePasswordRequest.NewPassword,
-                changePasswordRequest.ConfirmNewPassword);
+                var result = _passwordService.ChangePassword(
+                    user,
+                    changePasswordRequest.CurrentPassword,
+                    changePasswordRequest.NewPassword,
+                    changePasswordRequest.ConfirmNewPassword);
 
-            if (result is null) return StatusCode(500, "update password was unsuccesful");
+                if (result is null) return StatusCode(500, "update password was unsuccesful");
 
-            await _unitOfWork.CompleteAsync();
+                await _unitOfWork.CompleteAsync();
 
-            return Ok("Password was successfully updated");
+                return Ok("Password was successfully updated");
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500,ex.Message);
+            }
+            
 
         }
 
