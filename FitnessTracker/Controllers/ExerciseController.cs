@@ -57,7 +57,7 @@ namespace FitnessTracker.Controllers
             {
                var createdExercise= await _exerciseService.CreateExerciseAsync(exercise);
 
-                return Ok(createdExercise);
+                return Ok("Successfully created exercise");
             }
             catch (Exception e)
             {
@@ -78,6 +78,14 @@ namespace FitnessTracker.Controllers
             {
                 return StatusCode(500, e.Message);
             }
+        }
+
+        [HttpGet("GetExerciseCategories")]
+        public async Task<IActionResult> GetAllExerciseCategories() 
+        {
+            var exerciseCategories = await _exerciseService.GetExerciseCategoriesAsync();
+
+            return Ok(exerciseCategories.ToList());
         }
     }
 }

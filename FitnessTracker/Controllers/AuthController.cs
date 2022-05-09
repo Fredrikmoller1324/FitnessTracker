@@ -56,13 +56,13 @@ namespace FitnessTracker.Controllers
 
                 if (await _unitOfWork.CompleteAsync())
                 {
-                    var request = new MailRequest
-                    {
-                        Subject = "Registred",
-                        Body = $"Welcome to Fitnesstracker, {newUser.FirstName} {newUser.LastName}",
-                        ToEmail = $"{newUser.UserName}"
-                    };
-                    await _mailService.SendEmailAsync(request);
+                    //var request = new MailRequest
+                    //{
+                    //    Subject = "Registred",
+                    //    Body = $"Welcome to Fitnesstracker, {newUser.FirstName} {newUser.LastName}",
+                    //    ToEmail = $"{newUser.UserName}"
+                    //};
+                    //await _mailService.SendEmailAsync(request);
 
                     var newRegistredUser = await _unitOfWork.UserRepository.GetUserByUsername(encryptedUsername);
                     string token = TokenHandler.CreateLoginToken(newRegistredUser, _config);

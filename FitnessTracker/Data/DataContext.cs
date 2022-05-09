@@ -1,6 +1,7 @@
 ﻿using FitnessTracker.Data.EntityConfigurations;
 using FitnessTracker.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessTracker.Data
 {

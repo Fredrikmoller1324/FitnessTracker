@@ -1,13 +1,33 @@
-#datatableexample{
-    //background-color: #66FCF1;
-    background-color: #1F2833;
-    color: #66FCF1;
-    border-radius: 10px;
-    thead{
-        border-bottom: 2px solid white;
-    }
+#datatableexample {
+  //background-color: #66FCF1;
+  background-color: #1f2833;
+  color: #66fcf1;
+  border-radius: 10px;
 
-    tbody > tr:last-child > td {
-        border-bottom: 0;
-    }
+  tbody > tr:last-child > td {
+    border-bottom: 0;
+  }
+
+  tbody{
+    display: block;
+    max-height: 500px;
+    overflow: auto;
+  }
+
+  thead,tbody tr{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
 }
+
+.container {
+  margin-top: 5rem;
+}
+
+#createButton {
+  height: 2.5rem;
+}
+
+

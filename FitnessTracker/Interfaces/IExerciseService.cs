@@ -12,5 +12,7 @@ namespace FitnessTracker.Interfaces
         Task<Exercise> CreateExerciseAsync(ExerciseDTO exercise);
 
         Task<Exercise> DeleteExerciseAsync(int key);
+
+        Task<IEnumerable<ExerciseCategory>> GetExerciseCategoriesAsync();
     }
 }

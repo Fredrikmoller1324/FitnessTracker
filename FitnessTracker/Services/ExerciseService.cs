@@ -65,6 +65,8 @@ namespace FitnessTracker.Services
 
             var mappedNewExercise = _mapper.Map<Exercise>(newExercise);
 
+            //mappedNewExercise.ExerciseCategories.Clear();
+
             var createdExercise = _unitOfWork.ExerciseRepository.Create(mappedNewExercise);
 
             if (_unitOfWork.HasChangesAsync())
@@ -73,6 +75,15 @@ namespace FitnessTracker.Services
             }
 
             return createdExercise;
+        }
+
+        public async Task<IEnumerable<ExerciseCategory>> GetExerciseCategoriesAsync()
+        {
+            var exerciseCategories = await _unitOfWork.ExerciseCategoriesRepository.GetAllAsync(null,null);
+
+            if (exerciseCategories is null || !exerciseCategories.Any()) throw new NullOrEmptyException("List of exercisecategories is null or empty");
+
+            return exerciseCategories;
         }
     }
 }

@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ my_modal_title }}</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div *ngIf="isLoading" style="text-align: center">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <div class="alert alert-danger" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
+  <div class="alert alert-success" *ngIf="successSent">
+    <p>Successfully created Exercise</p>
+  </div>
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+    <div class="form-group mb-2">
+      <label>Name</label>
+      <input
+        class="form-control"
+        #name="ngModel"
+        name="Name"
+        [(ngModel)]="formModel.Name"
+        required
+      />
+    </div>
+    <div class="form-group mb-2">
+      <label>Select target muscles</label>
+      <ng-multiselect-dropdown
+        required
+        #exerciseCategories="ngModel"
+        name="ExerciseCategories"
+        [(ngModel)]="formModel.ExerciseCategories"
+        [settings]="dropdownSettings"
+        [data]="dropdownlist"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+    <div>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!form.valid || successSent"
+      >
+        Create
+      </button>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.close('Close click')"
+  >
+    Close
+  </button>
+</div>

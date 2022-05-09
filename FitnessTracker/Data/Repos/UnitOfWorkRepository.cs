@@ -19,6 +19,8 @@ namespace FitnessTracker.Data.Repos
 
         public IExerciseRepository ExerciseRepository => new ExerciseRepository(_context);
 
+        public IExerciseCategoriesRepository ExerciseCategoriesRepository => new ExerciseCategoriesRepository(_context);
+
         public async Task<bool> CompleteAsync()
         {
             return await _context.SaveChangesAsync() > 0;

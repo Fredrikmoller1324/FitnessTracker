@@ -1,11 +1,14 @@
 ﻿using FitnessTracker.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace FitnessTracker.Entities
 {
     public class ExerciseCategory : BaseEntity
     {
-        public int Id { get; set; }
+        [Key]
+        public new int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
 

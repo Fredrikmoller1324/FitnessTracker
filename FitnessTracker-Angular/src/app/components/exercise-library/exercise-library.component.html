@@ -1,16 +1,19 @@
-<div class="container text-center mt-4">
-  <input
+<div class="container text-center">
+  <div class="d-flex justify-content-between">
+    <input
     class="form-control mt-2 mb-2"
     type="text"
     placeholder="Search by name"
     style="max-width: 10rem"
   />
+    <button class="btn btn-primary mt-2 mb-2" id="createButton" type="button" (click)="OnCreateExercise()">Create</button>
+  </div>
   <table class="table" id="datatableexample">
     <thead>
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>ExerciseCategories</th>
+        <th>Target muscles</th>
         <th></th>
       </tr>
     </thead>
@@ -27,7 +30,10 @@
               aria-expanded="false"
               data-bs-toggle="dropdown"
             >
-              Exercisecategories
+            target muscles 
+            <span>
+              <i class="fa fa-arrow-down"></i>
+            </span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li *ngFor="let exerciseCategory of exercise.exerciseCategories">

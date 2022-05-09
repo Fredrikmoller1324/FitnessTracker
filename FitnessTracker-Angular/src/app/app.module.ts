@@ -15,6 +15,8 @@ import { BaseCardComponent } from './Shared/components/base-card/base-card.compo
 import { ChangePasswordComponent } from './components/profile/change-password/change-password.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { ExerciseLibraryComponent } from './components/exercise-library/exercise-library.component';
+import { CreateExerciseModalComponent } from './components/exercise-library/create-exercise-modal/create-exercise-modal.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import { ExerciseLibraryComponent } from './components/exercise-library/exercise
     ProfileComponent,
     BaseCardComponent,
     ChangePasswordComponent,
-    ExerciseLibraryComponent
+    ExerciseLibraryComponent,
+    CreateExerciseModalComponent
 
   ],
   imports: [
@@ -37,7 +40,8 @@ import { ExerciseLibraryComponent } from './components/exercise-library/exercise
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     NgbActiveModal,
