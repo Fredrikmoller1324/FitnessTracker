@@ -1,9 +1,27 @@
-<div>
-    <ul>
-        <li> Firstname: {{userFirstname}}</li>
-        <li> Lastname: {{userLastname}}</li>
-        <li> Email: {{userEmail}}</li>
-        <li> <button type="button" class="btn btn-primary" [routerLink]="['/changepassword']">Change Password</button></li>
-
-    </ul>
+<div class="mt-5 d-flex justify-content-center">
+  <div id="contentHolder">
+    <app-base-card [title]="'Profile'">
+      <ul class="p-2">
+        <li class="mb-2">
+          Firstname:
+          <span style="font-weight: bold"> {{ userFirstname }} </span>
+        </li>
+        <li class="mb-2">
+          Lastname: <span style="font-weight: bold">{{ userLastname }}</span>
+        </li>
+        <li class="mb-2">
+          Email: <span style="font-weight: bold">{{ userEmail }}</span>
+        </li>
+        <li class="mb-2">
+          <button
+            type="button"
+            class="btn btn-primary"
+            [routerLink]="['/changepassword']"
+          >
+            Change Password
+          </button>
+        </li>
+      </ul>
+    </app-base-card>
+  </div>
 </div>

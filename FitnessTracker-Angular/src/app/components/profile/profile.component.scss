@@ -1,0 +1,9 @@
+#contentHolder{
+    min-width: 40rem;
+}
+
+@media screen and (max-width: 575px) {
+    #contentHolder {
+        min-width: 20rem;
+    }
+  }

@@ -3,8 +3,10 @@
     <input
     class="form-control mt-2 mb-2"
     type="text"
+    #searchExerciseName
     placeholder="Search by name"
     style="max-width: 10rem"
+    (keyup.enter)="onSearchExercise(searchExerciseName.value)"
   />
     <button class="btn btn-primary mt-2 mb-2" id="createButton" type="button" (click)="OnCreateExercise()">Create</button>
   </div>

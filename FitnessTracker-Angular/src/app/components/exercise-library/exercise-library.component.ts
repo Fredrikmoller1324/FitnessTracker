@@ -28,12 +28,22 @@ export class ExerciseLibraryComponent implements OnInit {
     this.onGetExercices();
   }
 
+  onSearchExercise(exerciseName) {
+    console.log(exerciseName);
+    if (exerciseName.length > 0) {
+      this.exerciseService.getExerciseByName(exerciseName).subscribe((res) => {
+        this.exercises = [];
+        this.exercises.push(res);
+      });
+    }
+    else{
+      this.onGetExercices();
+    }
+  }
+
   onGetExercices() {
     this.exerciseService.getAllExercises().subscribe((exercises) => {
-      console.log('in onGetExercises() before', this.exercises);
-
       this.exercises = exercises;
-      console.log('in onGetExercises() after', this.exercises);
     });
   }
 

@@ -28,7 +28,6 @@ export class AuthService {
   readonly BaseURL = 'https://localhost:7146/api';
 
   signup(formData: any) {
-    console.log('in signup');
     return this.http.post<AuthResponseData>(this.BaseURL + '/Auth/Register', formData)
     .pipe(
       tap((res) => {

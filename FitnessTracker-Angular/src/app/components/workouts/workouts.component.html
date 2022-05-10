@@ -1,0 +1,84 @@
+<div id="contentHolder" class="container text-center d-flex mt-5">
+  <div @flyInOut id="filterBox" *ngIf="showFilter" class="p-4">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+      <div class="form-group mb-2">
+        <label>Workout Name</label>
+        <input #Name="ngModel" class="form-control" name="Name" [(ngModel)]="formModel.Name" />
+      </div>
+      <div class="form-group mb-2">
+        <label>Contain Exercise</label>
+        <input #Exercise="ngModel" class="form-control" name="Exercise" [(ngModel)]="formModel.Exercise" />
+      </div>
+      <div class="form-group mb-2">
+        <label>permformance Date</label>
+        <input #Date="ngModel" class="form-control" name="Date" [(ngModel)]="formModel.Date" />
+      </div>
+      <div class="d-flex justify-content-between">
+        <button
+          id="filterButton"
+          class="btn btn-primary mr-5"
+          type="submit"
+        >
+          Apply Filter
+        </button>
+        <button
+          id="resetButton"
+          class="btn btn-primary"
+          type="button"
+          (click)="resetFilter(form)"
+        >
+          Reset Filter
+        </button>
+      </div>
+    </form>
+  </div>
+  <div id="filterContentHolder" class="container text-center d-flex flex-column">
+    <div class="d-flex justiy-content-start">
+      <button
+        class="btn btn-primary mb-2"
+        type="button"
+        (click)="OnShowFilter()"
+      >
+        <i class="fa fa-arrow-left"></i>
+        Filter
+      </button>
+      <button
+        class="btn btn-primary mb-2"
+        id="createButton"
+        type="button"
+        (click)="OnCreateWorkout()"
+      >
+        Create
+      </button>
+    </div>
+    <table class="table" id="datatableexample">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Time taken (minutes)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="workouts.length === 0">
+          <td> No matching workouts </td>
+        </tr>
+        <tr *ngFor="let workout of workouts">
+          <td>{{ workout.name }}</td>
+          <td>{{ workout.date | date: "longDate" }}</td>
+          <td>{{ workout.timeTaken }}</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              (click)="onDetailsClicked(workout)"
+            >
+              Details
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

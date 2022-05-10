@@ -24,4 +24,8 @@ export class ExercisesService {
   getAllExerciseCategories(){
     return this.http.get<ExerciseCategoryModel[]>(this.BaseURL + `/Exercise/GetExerciseCategories`)
   }
+
+  getExerciseByName(exerciseName:string){
+    return this.http.get<ExerciseModel>(this.BaseURL + `/Exercise/GetExerciseByName?exerciseName=${exerciseName}`)
+  }
 }

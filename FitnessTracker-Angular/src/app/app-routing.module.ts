@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { ChangePasswordComponent } from './components/profile/change-password/change-password.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { WorkoutsComponent } from './components/workouts/workouts.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,6 +15,8 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate:[AuthGuard]},
   {path: 'changepassword', component: ChangePasswordComponent, canActivate:[AuthGuard]},
   {path: 'exerciseLibrary', component: ExerciseLibraryComponent, canActivate:[AuthGuard]},
+  {path: 'workouts', component: WorkoutsComponent, canActivate:[AuthGuard]},
+
 
 
 

@@ -17,6 +17,9 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { ExerciseLibraryComponent } from './components/exercise-library/exercise-library.component';
 import { CreateExerciseModalComponent } from './components/exercise-library/create-exercise-modal/create-exercise-modal.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { WorkoutsComponent } from './components/workouts/workouts.component';
+import { WorkoutDetailsModalComponent } from './components/workouts/workout-details-modal/workout-details-modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -31,7 +34,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     BaseCardComponent,
     ChangePasswordComponent,
     ExerciseLibraryComponent,
-    CreateExerciseModalComponent
+    CreateExerciseModalComponent,
+    WorkoutsComponent,
+    WorkoutDetailsModalComponent
 
   ],
   imports: [
@@ -41,7 +46,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     NgbActiveModal,

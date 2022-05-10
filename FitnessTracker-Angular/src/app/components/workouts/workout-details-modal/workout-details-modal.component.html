@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <h4 class="modal-title">Workout: {{ my_modal_title }}</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div *ngIf="isLoading" style="text-align: center">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <table class="table">
+    <thead>
+      <th>Exercise</th>
+      <th>Sets</th>
+      <th>Reps</th>
+      <th>Weight (kg)</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let workoutExercise of workout.workoutExercises">
+        <td>{{ workoutExercise.exercise.name }}</td>
+        <td>{{ workoutExercise.sets }}</td>
+        <td>{{ workoutExercise.reps }}</td>
+        <td>{{ workoutExercise.weight }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <button class="btn btn-primary" type="submit">Send</button>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.close('Close click')"
+  >
+    Close
+  </button>
+</div>

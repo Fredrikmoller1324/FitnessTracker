@@ -3,6 +3,7 @@ using FitnessTracker.Entities;
 using FitnessTracker.Entities.DTOs;
 using FitnessTracker.Exceptions;
 using FitnessTracker.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTracker.Services
@@ -19,6 +20,7 @@ namespace FitnessTracker.Services
             _mapper = mapper;
             _logger = logger;
         }
+
         public async Task CreateUserWorkoutAsync(UserWorkoutDTO userWorkout, int userId)
         {
             var mappedNewUserWorkout = _mapper.Map<UserWorkout>(userWorkout);
@@ -35,7 +37,6 @@ namespace FitnessTracker.Services
                 }
             }
         }
-
         public async Task<UserWorkout> DeleteUserWorkoutAsync(string userWorkoutName, int userId)
         {
             var deletedUserWorkout = _unitOfWork.UserWorkoutRepository.Delete(x=> x.UserId == userId && x.Name == userWorkoutName);
