@@ -20,16 +20,7 @@ namespace FitnessTracker.Data.Repos
         {
             if (entity == null) return null;
 
-            if (entity is Exercise)
-            {
-                var test = entity as Exercise;
-
-                _dataContext.Attach(test);
-                _dataContext.AddAsync(test);
-                return entity;
-
-            }
-
+            _dataContext.Attach(entity);
             _dataContext.Set<TEntity>().AddAsync(entity);
 
             return entity;

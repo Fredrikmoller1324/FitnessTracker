@@ -1,4 +1,5 @@
-﻿using FitnessTracker.Entities;
+﻿using FitnessTracker.Data.Models.DTOs;
+using FitnessTracker.Entities;
 using FitnessTracker.Entities.DTOs;
 using FitnessTracker.Helpers;
 using FitnessTracker.Interfaces;
@@ -44,15 +45,23 @@ namespace FitnessTracker.Controllers
         }
 
         [HttpGet("GetAllUserWorkoutsByName"), Authorize]
-        public async Task<IActionResult> GetUserWorkouts(string userWorkoutName)
+        public async Task<IActionResult> GetUserWorkouts(string workoutName = "", int? exerciseId = null, DateTime? startDate = null, DateTime? endDate = null)
         {
             try
             {
+                FilterWorkoutsRequest filterWorkoutsRequest = new()
+                {
+                    WorkoutName = workoutName,
+                    ExerciseId = exerciseId,
+                    StartDate = (DateTime)(startDate != null ? startDate : DateTime.Now),
+                    EndDate = (DateTime)(endDate != null ? endDate : DateTime.Now.AddDays(1))
+                };
+
                 _logger.LogInformation("In 'GetAllUserWorkoutsByName'");
 
                 var userId = User.GetUserId();
 
-                var allUserWorkouts = await _userWorkoutService.GetAllSpecificUserWorkoutsByName(userId,userWorkoutName);
+                var allUserWorkouts = await _userWorkoutService.GetAllSpecificUserWorkoutsByName(userId, filterWorkoutsRequest);
 
                 return Ok(allUserWorkouts);
 

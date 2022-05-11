@@ -1,4 +1,5 @@
-﻿using FitnessTracker.Entities;
+﻿using FitnessTracker.Data.Models.DTOs;
+using FitnessTracker.Entities;
 using FitnessTracker.Entities.DTOs;
 
 namespace FitnessTracker.Interfaces
@@ -9,7 +10,7 @@ namespace FitnessTracker.Interfaces
 
         Task<IEnumerable<UserWorkoutDTO>> GetAllUserWorkouts(int userId);
 
-        Task<IEnumerable<UserWorkoutDTO>> GetAllSpecificUserWorkoutsByName(int userId, string name);
+        Task<IEnumerable<UserWorkoutDTO>> GetAllSpecificUserWorkoutsByName(int userId, FilterWorkoutsRequest filterWorkoutsRequest);
 
         Task<UserWorkout> DeleteUserWorkoutAsync(string userWorkoutName, int userId);
     }

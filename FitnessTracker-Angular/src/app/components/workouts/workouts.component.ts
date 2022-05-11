@@ -7,11 +7,14 @@ import {
 } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { WorkoutModel } from 'src/app/Models/workout.model';
 import { WorkoutsService } from 'src/app/Services/workouts.service';
 import { WorkoutDetailsModalComponent } from './workout-details-modal/workout-details-modal.component';
+import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { ExerciseModel } from 'src/app/Models/exercise.model';
+import { ExercisesService } from 'src/app/Services/exercices.service';
 
 @Component({
   selector: 'app-workouts',
@@ -26,25 +29,47 @@ import { WorkoutDetailsModalComponent } from './workout-details-modal/workout-de
   styleUrls: ['./workouts.component.scss'],
 })
 export class WorkoutsComponent implements OnInit {
+
+  startDate: NgbDateStruct;
+  endDate: NgbDateStruct;
+
+  date1: NgbDate = this.calendar.getToday();
+  date2: NgbDate = this.calendar.getNext(this.calendar.getToday(), 'd', 1)
+
   workouts: WorkoutModel[] = [];
+  exercises: ExerciseModel[] = [];
   showFilter = false;
   fadeOut = false;
 
   formModel = {
     Name: '',
-    Exercise: '',
-    Date: '',
+    ExerciseId: '',
+    StartDate: this.date1,
+    EndDate: this.date2
   };
   error: string = null;
   isLoading: boolean = false;
 
   constructor(
     private workoutService: WorkoutsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private calendar: NgbCalendar,
+    private ngbDateParserFormatter: NgbDateParserFormatter,
+    private exerciseService: ExercisesService
   ) {}
 
   ngOnInit(): void {
+    console.log(typeof(this.date1))
+    console.log('formatted? ',this.ngbDateParserFormatter.format(this.date1))
     this.getWorkoutes();
+    this.getExercises();
+  }
+
+  getExercises(){
+    this.exerciseService.getAllExercises().subscribe((res: ExerciseModel[]) =>{
+      console.log(res)
+      this.exercises = res;
+    })
   }
 
   OnCreateWorkout() {}
@@ -72,8 +97,8 @@ export class WorkoutsComponent implements OnInit {
     this.showFilter = !this.showFilter;
   }
 
-  resetFilter(form:NgForm){
-    form.reset();
+  resetFilter(){
+    this.resetForm();
     this.getWorkoutes();
   }
 
@@ -81,6 +106,14 @@ export class WorkoutsComponent implements OnInit {
     if (!form.valid) {
       return;
     }
+
+    console.log(form)
+    console.log(form.value.StartDate)
+    console.log("date1", this.ngbDateParserFormatter.format(form.value.StartDate))
+
+    form.value.StartDate = this.ngbDateParserFormatter.format(form.value.StartDate)
+    form.value.EndDate = this.ngbDateParserFormatter.format(form.value.EndDate)
+
 
     this.error = null;
 
@@ -103,7 +136,17 @@ export class WorkoutsComponent implements OnInit {
         this.isLoading = false;
       }
     );
+    
+    this.resetForm();
+  }
 
-    form.reset();
+  private resetForm(){
+    console.log(this.formModel.StartDate)
+      this.date1 = this.calendar.getToday(),
+      this.date2 = this.calendar.getNext(this.calendar.getToday(), 'd', 1),
+      this.formModel.ExerciseId = '',
+      this.formModel.Name = '';
+    console.log(this.formModel.StartDate)
+
   }
 }

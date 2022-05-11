@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FitnessTracker.Data.Models.DTOs;
 using FitnessTracker.Entities;
 using FitnessTracker.Entities.DTOs;
 using FitnessTracker.Exceptions;
@@ -27,11 +28,11 @@ namespace FitnessTracker.Services
 
             mappedNewUserWorkout.UserId = userId;
 
-             _unitOfWork.UserWorkoutRepository.Create(mappedNewUserWorkout);
+            _unitOfWork.UserWorkoutRepository.Create(mappedNewUserWorkout);
 
             if (_unitOfWork.HasChangesAsync())
             {
-                if(await _unitOfWork.CompleteAsync())
+                if (await _unitOfWork.CompleteAsync())
                 {
                     _logger.LogInformation($"Succesfully CREATED UserWorkout with id: '{mappedNewUserWorkout.Id}'");
                 }
@@ -39,13 +40,13 @@ namespace FitnessTracker.Services
         }
         public async Task<UserWorkout> DeleteUserWorkoutAsync(string userWorkoutName, int userId)
         {
-            var deletedUserWorkout = _unitOfWork.UserWorkoutRepository.Delete(x=> x.UserId == userId && x.Name == userWorkoutName);
+            var deletedUserWorkout = _unitOfWork.UserWorkoutRepository.Delete(x => x.UserId == userId && x.Name == userWorkoutName);
 
-            if(deletedUserWorkout is null) throw new NullOrEmptyException($"deletion of userWorkout with name: '{userWorkoutName}' for user with id: '{userId}' has failed");
+            if (deletedUserWorkout is null) throw new NullOrEmptyException($"deletion of userWorkout with name: '{userWorkoutName}' for user with id: '{userId}' has failed");
 
             if (_unitOfWork.HasChangesAsync())
             {
-                if(await _unitOfWork.CompleteAsync())
+                if (await _unitOfWork.CompleteAsync())
                 {
                     _logger.LogInformation($"Succesfully DELETED UserWorkout with id: '{deletedUserWorkout.Id}'");
                 }
@@ -54,16 +55,18 @@ namespace FitnessTracker.Services
             return deletedUserWorkout;
         }
 
-        public async Task<IEnumerable<UserWorkoutDTO>> GetAllSpecificUserWorkoutsByName(int userId, string name)
+        public async Task<IEnumerable<UserWorkoutDTO>> GetAllSpecificUserWorkoutsByName(int userId, FilterWorkoutsRequest request)
         {
             var userWorkouts = await _unitOfWork.UserWorkoutRepository.GetAllAsync(
-                x=>x.UserId == userId &&
-                x.Name.Contains(name),
-               src=>src
-               .Include(x=>x.WorkoutExercises)
-               .ThenInclude(x=>x.Exercise));
+                x => x.UserId == userId &&
+                x.Name.Contains(request.WorkoutName),
+               src => src
+               .Include(x => x.WorkoutExercises)
+               .ThenInclude(x => x.Exercise));
 
-            if (userWorkouts is null) throw new KeyNotFoundException($"User with id: {userId} has no user workouts that has '{name}' in it's name");
+            userWorkouts = Filter(userWorkouts, request);
+
+            if (userWorkouts is null) throw new KeyNotFoundException($"User with id: {userId} has no user workouts that has '{request.WorkoutName}' in it's name");
 
             var result = userWorkouts.Select(
                 userWorkout => _mapper.Map<UserWorkoutDTO>(userWorkout)).ToList();
@@ -85,6 +88,20 @@ namespace FitnessTracker.Services
                 userworkout => _mapper.Map<UserWorkoutDTO>(userworkout)).ToList();
 
             return result;
+        }
+
+        private IEnumerable<UserWorkout> Filter(IEnumerable<UserWorkout> userWorkouts, FilterWorkoutsRequest request)
+        {
+            if (request.ExerciseId != null && request.ExerciseId != 0)
+            {
+                userWorkouts = userWorkouts.Where(x => x.WorkoutExercises.Any(z => z.ExerciseId == request.ExerciseId));
+            }
+
+            userWorkouts = userWorkouts.Where(
+                x => Convert.ToDateTime(x.Date.ToString("yyyy-MM-dd")) >= Convert.ToDateTime(request.StartDate.ToString("yyyy-MM-dd")) 
+                && Convert.ToDateTime(x.Date.ToString("yyyy-MM-dd")) <= Convert.ToDateTime(request.EndDate.ToString("yyyy-MM-dd")));
+
+            return userWorkouts;
         }
     }
 }
