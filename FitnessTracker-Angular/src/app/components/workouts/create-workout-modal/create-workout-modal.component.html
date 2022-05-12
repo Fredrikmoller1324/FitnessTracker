@@ -1,0 +1,88 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ my_modal_title }}</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div *ngIf="isLoading" style="text-align: center">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <div class="alert alert-danger" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
+  <div class="alert alert-success" *ngIf="successSent">
+    <p>Successfully created Workout</p>
+  </div>
+
+  <form [formGroup]="workoutForm" (ngSubmit)="onSubmit()">
+    <div class="form-group mb-2">
+      <label>Name:</label>
+      <input class="form-control" type="text" formControlName="name" />
+    </div>
+
+    <div class="form-group mb-2">
+      <label>Time taken (min):</label>
+      <input class="form-control" type="number" formControlName="timeTaken" />
+    </div>
+
+    <div
+    formArrayName ="workoutExercises"
+      class="form-group mb-2"
+      *ngFor="let workoutExerciseForm of workoutExercises.controls; let i = index"
+    >
+      <div class="d-flex" [formGroup]="$any(workoutExerciseForm)">
+        <div class="form-group mb-2 p-1">
+          <label>WorkoutExercise: </label>
+          <select class="form-control" type="text" formControlName="exercise">
+            <option
+              *ngFor="let exercise of exercises"
+              [ngValue]="exercise"
+            >
+              {{ exercise.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group mb-2 p-1">
+          <label>Reps:</label>
+          <input class="form-control" type="number" formControlName="reps" />
+        </div>
+        <div class="form-group mb-2 p-1">
+          <label>Sets:</label>
+          <input class="form-control" type="number" formControlName="sets" />
+        </div>
+        <div class="form-group mb-2 p-1">
+          <label>Weight:</label>
+          <input class="form-control" type="number" formControlName="weight" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group mb-2 d-flex">
+      <button type="button" (click)="addWorkoutExercise()">
+        + Add another alias
+      </button>
+      <button
+        class="btn btn-success"
+        type="submit"
+        [disabled]="!workoutForm.valid"
+      >
+        Create Workout
+      </button>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.close('Close click')"
+  >
+    Close
+  </button>
+</div>

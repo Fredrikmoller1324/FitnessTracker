@@ -84,7 +84,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="workouts.length === 0">
+        <tr *ngIf="isLoading">
+          <td>
+              <app-loading-spinner></app-loading-spinner>
+          </td>
+        </tr>
+        <tr *ngIf="workouts.length === 0 && !isLoading">
           <td> No matching workouts </td>
         </tr>
         <tr *ngFor="let workout of workouts">

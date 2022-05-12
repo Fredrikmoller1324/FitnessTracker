@@ -20,6 +20,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { WorkoutsComponent } from './components/workouts/workouts.component';
 import { WorkoutDetailsModalComponent } from './components/workouts/workout-details-modal/workout-details-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreateWorkoutModalComponent } from './components/workouts/create-workout-modal/create-workout-modal.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ExerciseLibraryComponent,
     CreateExerciseModalComponent,
     WorkoutsComponent,
-    WorkoutDetailsModalComponent
+    WorkoutDetailsModalComponent,
+    CreateWorkoutModalComponent
 
   ],
   imports: [

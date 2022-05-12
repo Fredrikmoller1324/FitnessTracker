@@ -15,6 +15,7 @@ import { WorkoutDetailsModalComponent } from './workout-details-modal/workout-de
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { ExerciseModel } from 'src/app/Models/exercise.model';
 import { ExercisesService } from 'src/app/Services/exercices.service';
+import { CreateWorkoutModalComponent } from './create-workout-modal/create-workout-modal.component';
 
 @Component({
   selector: 'app-workouts',
@@ -34,7 +35,7 @@ export class WorkoutsComponent implements OnInit {
   endDate: NgbDateStruct;
 
   date1: NgbDate = this.calendar.getToday();
-  date2: NgbDate = this.calendar.getNext(this.calendar.getToday(), 'd', 1)
+  date2: NgbDate = this.calendar.getToday();
 
   workouts: WorkoutModel[] = [];
   exercises: ExerciseModel[] = [];
@@ -72,11 +73,17 @@ export class WorkoutsComponent implements OnInit {
     })
   }
 
-  OnCreateWorkout() {}
+  OnCreateWorkout() {
+    const modalRef = this.modalService.open(CreateWorkoutModalComponent, {
+      size: 'md',
+      centered: true,
+    });
+    modalRef.componentInstance.my_modal_title = 'Create new workout';
+  }
 
   onDetailsClicked(workout: WorkoutModel) {
     const modalRef = this.modalService.open(WorkoutDetailsModalComponent, {
-      size: 'md',
+      size: 'lg',
       centered: true,
     });
     modalRef.componentInstance.my_modal_title = workout.name;
@@ -143,7 +150,7 @@ export class WorkoutsComponent implements OnInit {
   private resetForm(){
     console.log(this.formModel.StartDate)
       this.date1 = this.calendar.getToday(),
-      this.date2 = this.calendar.getNext(this.calendar.getToday(), 'd', 1),
+      this.date2 = this.calendar.getToday(),
       this.formModel.ExerciseId = '',
       this.formModel.Name = '';
     console.log(this.formModel.StartDate)
