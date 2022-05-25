@@ -7,9 +7,24 @@
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
-    height: 93.5vh;
+    height: 100vh;
   }
 
   h1{
     color: #66FCF1;
+  }
+
+  p{
+    color: #66FCF1;
+    font-size: 1.2rem;
+  }
+
+  .welcome-card{
+    margin-top: 10rem;
+    padding: 2rem;
+    background-color: rgba(31, 40, 51, .95);
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+
   }

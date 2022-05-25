@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { ExerciseCategoryModel, ExerciseModel } from 'src/app/Models/exercise.model';
 import { WorkoutExercise } from 'src/app/Models/workout.model';
 import { ExercisesService } from 'src/app/Services/exercices.service';
+import { WorkoutsService } from 'src/app/Services/workouts.service';
 
 @Component({
   selector: 'app-create-workout-modal',
@@ -59,6 +60,7 @@ export class CreateWorkoutModalComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private exerciseService: ExercisesService,
+    private workoutService: WorkoutsService,
     private fb: FormBuilder
   ) {}
 
@@ -80,27 +82,27 @@ export class CreateWorkoutModalComponent implements OnInit {
 
     this.error = null;
 
-    //let authObs: Observable<string>;
+    let authObs: Observable<string>;
 
-    //this.isLoading = true;
+    this.isLoading = true;
 
-    // authObs = this.exerciseService.createExercise(form.value);
+    authObs = this.workoutService.createUserWorkout(this.workoutForm.value);
 
-    // authObs.subscribe(
-    //   (res) => {
-    //     this.isLoading = false;
-    //     this.error = null;
-    //     this.successSent = true;
-    //   },
-    //   (err) => {
-    //     console.log(err.error);
-    //     this.error = err.error;
-    //     this.isLoading = false;
-    //     this.successSent = false;
-    //     console.log('successent', this.successSent);
-    //     console.log('errordisplay', this.error);
-    //   }
-    // );
+    authObs.subscribe(
+      (res) => {
+        this.isLoading = false;
+        this.error = null;
+        this.successSent = true;
+      },
+      (err) => {
+        console.log(err.error);
+        this.error = err.error;
+        this.isLoading = false;
+        this.successSent = false;
+        console.log('successent', this.successSent);
+        console.log('errordisplay', this.error);
+      }
+    );
 
     // form.reset();
   }

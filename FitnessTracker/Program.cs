@@ -22,7 +22,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Host.UseSerilog((hostbuilderContext,loggerConfig)=>
+    builder.Host.UseSerilog((hostbuilderContext, loggerConfig) =>
     loggerConfig.WriteTo.Console()
     .ReadFrom.Configuration(hostbuilderContext.Configuration));
 
@@ -60,7 +60,7 @@ try
 
         options.OperationFilter<SecurityRequirementsOperationFilter>(); //matt frier
 
-    options.SwaggerDoc("v1", new OpenApiInfo
+        options.SwaggerDoc("v1", new OpenApiInfo
         {
             Version = "v1",
             Title = "Api",
@@ -110,7 +110,7 @@ try
 
 
     //By default, the ASP.NET Core framework logs multiple information-level events per request.
-    //Serilog's request logging streamlines this, into a single message per request, including path, method, timings, status code, and exception.
+    //Serilog's request logging streamlines this into a single message per request, including path, method, timings, status code, and exception.
     app.UseSerilogRequestLogging();
 
     app.UseHttpsRedirection();
@@ -124,7 +124,7 @@ try
 
     app.Run();
 }
-catch(Exception ex)
+catch (Exception ex)
 {
     Log.Fatal(ex, "Unhandled exception");
 }

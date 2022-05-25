@@ -22,4 +22,12 @@ export class WorkoutsService {
         `/UserWorkout/GetAllUserWorkoutsByName?userWorkoutName=${form.Name}&exerciseId=${+form.ExerciseId}&startDate=${form.StartDate}&endDate=${form.EndDate}`
     );
   }
+
+  createUserWorkout(formData: any){
+    console.log('inside CREATEUSERWORKOUT',formData);
+
+    return this.http.post(this.BaseURL + `/UserWorkout/CreateUserWorkout`,formData,{
+      responseType:'text'
+    });
+  }
 }

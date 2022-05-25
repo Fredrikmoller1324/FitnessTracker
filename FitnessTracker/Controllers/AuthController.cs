@@ -188,8 +188,6 @@ namespace FitnessTracker.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
-
-
         }
     }
 }

@@ -20,8 +20,6 @@ namespace FitnessTrackerIntegrationTests.Controllers
 {
     public class ExerciseControllerTests : IntegrationTest
     {
-
-
         [Fact]
         public async Task GetExercises_RunAction_ReturnsAllexercices()
         {
@@ -36,11 +34,12 @@ namespace FitnessTrackerIntegrationTests.Controllers
             Assert.Equal(6, dataAsObject.Count);
             Assert.IsType<List<ExerciseDTO>>(dataAsObject);
         }
+
         [Fact]
         public async Task CreateExercise_RunAction_SuccesfullyCreatesExercise()
         {
             var createdExercise = await CreateExercicseAsync(
-                new ExerciseDTO
+        new ExerciseDTO
                 {
                     Name = "createdExercise3",
                     ExerciseCategories = new List<ExerciseCategory>()

@@ -40,7 +40,6 @@ export class WorkoutsComponent implements OnInit {
   workouts: WorkoutModel[] = [];
   exercises: ExerciseModel[] = [];
   showFilter = false;
-  fadeOut = false;
 
   formModel = {
     Name: '',
@@ -75,7 +74,7 @@ export class WorkoutsComponent implements OnInit {
 
   OnCreateWorkout() {
     const modalRef = this.modalService.open(CreateWorkoutModalComponent, {
-      size: 'md',
+      size: 'lg',
       centered: true,
     });
     modalRef.componentInstance.my_modal_title = 'Create new workout';
@@ -83,7 +82,7 @@ export class WorkoutsComponent implements OnInit {
 
   onDetailsClicked(workout: WorkoutModel) {
     const modalRef = this.modalService.open(WorkoutDetailsModalComponent, {
-      size: 'lg',
+      size: 'md',
       centered: true,
     });
     modalRef.componentInstance.my_modal_title = workout.name;
@@ -98,9 +97,6 @@ export class WorkoutsComponent implements OnInit {
   }
 
   OnShowFilter() {
-    if (this.showFilter) {
-      this.fadeOut = !this.fadeOut;
-    }
     this.showFilter = !this.showFilter;
   }
 

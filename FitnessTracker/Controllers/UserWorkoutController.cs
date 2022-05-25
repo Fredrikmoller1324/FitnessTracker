@@ -74,10 +74,21 @@ namespace FitnessTracker.Controllers
         }
 
         [HttpPost("CreateUserWorkout"), Authorize]
-        public async Task CreateUserWorkout(UserWorkoutDTO model)
+        public async Task<IActionResult> CreateUserWorkout(UserWorkoutDTO model)
         {
-            var userId = User.GetUserId();
-            await _userWorkoutService.CreateUserWorkoutAsync(model, userId);
+            try
+            {
+                var userId = User.GetUserId();
+
+                await _userWorkoutService.CreateUserWorkoutAsync(model, userId);
+
+                return Ok("Successfully created new userWorkout");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }  
         }
 
         [HttpDelete("DeleteUserWorkout"), Authorize]
