@@ -42,7 +42,10 @@ try
 
     builder.Services.AddDbContext<DataContext>(options =>
     {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DBAzureConnection"));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DBAzureConnection"), builder =>
+        {
+            builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10),null);
+        });
     });
 
     builder.Services.AddControllers();
@@ -98,7 +101,7 @@ try
     }
     app.UseCors(options =>
     {
-        options.WithOrigins("http://localhost:4200")
+        options.WithOrigins("http://localhost:5001")
         .AllowAnyMethod()
         .AllowAnyHeader();
     });
